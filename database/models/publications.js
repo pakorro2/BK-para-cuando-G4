@@ -11,14 +11,36 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Publications.hasMany(models.Votes)
+      Publications.belongsTo(models.Profiles)
+      Publications.belongsTo(models.Publications_type)
+      Publications.belongsTo(models.Cities)
     }
   }
   Publications.init({
     id: DataTypes.UUID,
-    title: DataTypes.STRING
+    profile_id: DataTypes.UUID,
+    publications_types_id: DataTypes.UUID,
+    title: DataTypes.STRING,
+    description: DataTypes.STRING,
+    content: DataTypes.STRING,
+    picture: DataTypes.STRING,
+    city_id: DataTypes.STRING,
+    imagen_url: {
+      type: DataTypes.STRING,
+      validate: {
+        isUrl: true
+      }
+    }
   }, {
     sequelize,
     modelName: 'Publications',
+    tableName: 'publications',
+    timestamps: true,
+    underscored: true,
+    no_timestamps: {
+      attributes: { exclude: ['created_at', 'updated_at'] }
+    }
   });
   return Publications;
 };

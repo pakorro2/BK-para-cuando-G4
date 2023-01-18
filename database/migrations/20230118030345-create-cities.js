@@ -5,9 +5,21 @@ module.exports = {
     await queryInterface.createTable('Cities', {
       id: {
         allowNull: false,
-        autoIncrement: true,
+        autoIncrement: false,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4
+      },
+      county_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        foreignKey: true,
+        references: {
+          model: 'Countries',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       name: {
         type: Sequelize.STRING

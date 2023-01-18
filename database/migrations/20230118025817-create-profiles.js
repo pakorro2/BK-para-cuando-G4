@@ -23,7 +23,14 @@ module.exports = {
       },
       role_id: {
         type: Sequelize.INTEGER,
-        foreignKey: true
+        allowNull: false,
+        foreignKey: true,
+        references: {
+          model: 'Roles',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       image_url: {
         type: Sequelize.STRING
@@ -37,8 +44,14 @@ module.exports = {
       },
       country_id: {
         type: Sequelize.INTEGER,
-        foreignKey: true
-
+        allowNull: false,
+        foreignKey: true,
+        references: {
+          model: 'Contries',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       createdAt: {
         allowNull: false,

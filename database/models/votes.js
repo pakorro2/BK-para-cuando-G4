@@ -11,13 +11,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Publications.belongsTo(models.Profiles)
+      Profiles.belongsTo(models.Publications)
     }
   }
   Votes.init({
+    profile_id: DataTypes.UUID,
     publication_id: DataTypes.UUID
   }, {
     sequelize,
     modelName: 'Votes',
+    tableName: 'votes',
+    timestamps: true,
+    underscored: true,
   });
   return Votes;
 };

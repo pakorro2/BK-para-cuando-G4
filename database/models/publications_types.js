@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Publications_types.hasMany(models.Publications)
     }
   }
   Publications_types.init({
@@ -20,6 +21,12 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Publications_types',
+    tableName: 'publications_types',
+    timestamps: true,
+    underscored: true,
+    no_timestamps: {
+      attributes: { exclude: ['created_at', 'updated_at'] }
+    }
   });
   return Publications_types;
 };

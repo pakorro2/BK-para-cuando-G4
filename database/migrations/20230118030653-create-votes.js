@@ -3,16 +3,28 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Votes', {
-      id: {
-        allowNull: false,
-        autoIncrement: false,
-        primaryKey: true,
+      profile_id: {
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4
+        allowNull: false,
+        foreignKey: true,
+        references: {
+          model: 'Profiles',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
 
       },
       publication_id: {
-        type: Sequelize.UUID
+        type: Sequelize.UUID,
+        allowNull: false,
+        foreignKey: true,
+        references: {
+          model: 'Publications',
+          key: 'id'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       createdAt: {
         allowNull: false,
