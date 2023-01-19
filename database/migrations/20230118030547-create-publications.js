@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Publications', {
+    await queryInterface.createTable('publications', {
       id: {
         allowNull: false,
         autoIncrement: false,
@@ -15,7 +15,7 @@ module.exports = {
         allowNull: false,
         foreignKey: true,
         references: {
-          model: 'Profile',
+          model: 'profiles',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -26,7 +26,7 @@ module.exports = {
         allowNull: false,
         foreignKey: true,
         references: {
-          model: 'Publications_types',
+          model: 'publications_types',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -53,7 +53,7 @@ module.exports = {
         allowNull: false,
         foreignKey: true,
         references: {
-          model: 'Cities',
+          model: 'cities',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -74,6 +74,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Publications');
+    await queryInterface.dropTable('publications');
   }
 };

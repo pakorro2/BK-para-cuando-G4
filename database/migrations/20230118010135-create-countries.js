@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Cities', {
+    await queryInterface.createTable('countries', {
       id: {
         allowNull: false,
         autoIncrement: false,
@@ -10,19 +10,9 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4
       },
-      county_id: {
-        type: Sequelize.UUID,
-        allowNull: false,
-        foreignKey: true,
-        references: {
-          model: 'Countries',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
@@ -35,6 +25,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Cities');
+    await queryInterface.dropTable('countries');
   }
 };

@@ -2,13 +2,13 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Votes', {
+    await queryInterface.createTable('votes', {
       profile_id: {
         type: Sequelize.UUID,
         allowNull: false,
         foreignKey: true,
         references: {
-          model: 'Profiles',
+          model: 'profiles',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -20,7 +20,7 @@ module.exports = {
         allowNull: false,
         foreignKey: true,
         references: {
-          model: 'Publications',
+          model: 'publications',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -37,6 +37,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Votes');
+    await queryInterface.dropTable('votes');
   }
 };

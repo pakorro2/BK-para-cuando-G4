@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Publications.hasMany(models.Votes)
       Publications.belongsTo(models.Profiles)
-      Publications.belongsTo(models.Publications_type)
       Publications.belongsTo(models.Cities)
+      Publications.belongsTo(models.Publications_type)
     }
   }
   Publications.init({

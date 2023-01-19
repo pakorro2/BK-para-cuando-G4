@@ -11,16 +11,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Profiles.belongsTo(models.Users)
+      Profiles.hasMany(models.Publications)
+      Profiles.hasMany(models.Votes)
       Profiles.belongsTo(models.Roles)
       Profiles.belongsTo(models.Countries)
-      Profiles.belongsTo(models.Votes)
-      Profiles.hasMany(models.Publications)
     }
   }
   Profiles.init({
     id: DataTypes.UUID,
     user_id: DataTypes.UUID,
-    role_id: DataTypes.INTEGER,
+    role_id: DataTypes.UUID,
     image_url: {
       type: DataTypes.STRING,
       validate: {

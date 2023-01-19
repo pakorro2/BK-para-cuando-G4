@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Profiles', {
+    await queryInterface.createTable('profiles', {
       id: {
         allowNull: false,
         autoIncrement: false,
@@ -15,18 +15,18 @@ module.exports = {
         allowNull: false,
         foreignKey: true,
         references: {
-          model: 'Users',
+          model: 'users',
           key: 'id'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
       role_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
         foreignKey: true,
         references: {
-          model: 'Roles',
+          model: 'roles',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -43,11 +43,11 @@ module.exports = {
         unique: true
       },
       country_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         allowNull: false,
         foreignKey: true,
         references: {
-          model: 'Contries',
+          model: 'countries',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -64,6 +64,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Profiles');
+    await queryInterface.dropTable('profiles');
   }
 };
