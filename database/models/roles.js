@@ -16,7 +16,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   Roles.init({
     id: DataTypes.UUID,
-    name: DataTypes.STRING
+    name: {
+      type: DataTypes.STRING,
+      defaultValue: 'public'
+    }
   }, {
     sequelize,
     modelName: 'Roles',
