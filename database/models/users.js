@@ -14,7 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Users.init({
-    id: DataTypes.UUID,
+    id: {
+      primaryKey: true,
+      type: DataTypes.UUID,
+    },
     first_name: DataTypes.STRING,
     last_name: DataTypes.STRING,
     email: {
@@ -25,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: DataTypes.STRING,
     username: DataTypes.STRING,
-    email_verified: DataTypes.DATE,
+    // email_verified: DataTypes.DATE,
     token: DataTypes.STRING
   }, {
     sequelize,
@@ -39,9 +42,9 @@ module.exports = (sequelize, DataTypes) => {
         exclude: ['password']
       }
     },
-    no_timestamps: {
-      attributes: { exclude: ['created_at', 'updated_at'] }
-    }
+    // no_timestamps: {
+    //   attributes: { exclude: ['created_at', 'updated_at'] }
+    // }
   });
   return Users;
 };

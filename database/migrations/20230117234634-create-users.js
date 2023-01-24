@@ -40,12 +40,12 @@ module.exports = {
         token: {
           type: Sequelize.STRING
         },
-        createdAt: {
+        created_at: {
           allowNull: false,
           type: Sequelize.DATE,
           field: 'created_at'
         },
-        updatedAt: {
+        updated_at: {
           allowNull: false,
           type: Sequelize.DATE,
           field: 'updated_at'
@@ -66,6 +66,7 @@ module.exports = {
       await transaction.commit()
     } catch (error) {
       await transaction.rollback()
+      console.log(error.message)
       throw error
     }
   }
