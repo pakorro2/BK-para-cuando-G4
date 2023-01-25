@@ -6,27 +6,25 @@ module.exports = {
     try {
       await queryInterface.createTable('countries', {
         id: {
-          allowNull: false,
-          autoIncrement: false,
+          type: Sequelize.INTEGER,
+          autoIncrement: true,
           primaryKey: true,
-          type: Sequelize.UUID,
-          defaultValue: Sequelize.UUIDV4
         },
         name: {
           type: Sequelize.STRING,
-          allowNull: false
-        },
-        createdAt: {
+          unique: true,
           allowNull: false,
-          type: Sequelize.DATE,
-          field: 'created_at'
         },
-        updatedAt: {
-          allowNull: false,
+        created_at: {
           type: Sequelize.DATE,
-          field: 'updated_at'
+          allowNull: false,
+        },
+        updated_at: {
+          type: Sequelize.DATE,
+          allowNull: false,
         }
       }, { transaction })
+
       await transaction.commit()
     } catch (error) {
       await transaction.rollback()
@@ -35,7 +33,6 @@ module.exports = {
   },
   down: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
-
     try {
       await queryInterface.dropTable('countries', { transaction })
       await transaction.commit()

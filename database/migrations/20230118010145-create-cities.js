@@ -2,39 +2,41 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('cities', {
-      id: {
-        allowNull: false,
-        autoIncrement: false,
-        primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4
-      },
-      county_id: {
-        type: Sequelize.UUID,
-        allowNull: false,
-        foreignKey: true,
-        references: {
-          model: 'countries',
-          key: 'id'
+    const transaction = await queryInterface.sequelize.transaction()
+    try {
+      await queryInterface.createTable('cities', {
+        id: {
+          type: Sequelize.INTEGER,
+          primaryKey: true,
+          autoIncrement: true,
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
-      },
-      name: {
-        type: Sequelize.STRING
-      },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        field: 'created_at'
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        field: 'updated_at'
-      }
-    })
+        country_id: {
+          type: Sequelize.INTEGER,
+          references: {
+            key: 'id',
+            model: 'countries'
+          },
+          onUpdate: 'RESTRICT',
+          onDelete: 'CASCADE',
+        },
+        name: {
+          type: Sequelize.STRING
+        },
+        created_at: {
+          type: Sequelize.DATE,
+          allowNull: false,
+        },
+        updated_at: {
+          type: Sequelize.DATE,
+          allowNull: false,
+        }
+      }, { transaction })
+      
+      await transaction.commit()
+    } catch (error) {
+      await transaction.rollback()
+      throw error
+    }
   },
   down: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
@@ -45,6 +47,5 @@ module.exports = {
       await transaction.rollback()
       throw error
     }
-
   }
 }

@@ -6,29 +6,26 @@ module.exports = {
     try {
       await queryInterface.createTable('publications_types', {
         id: {
-          allowNull: false,
-          autoIncrement: false,
+          type: Sequelize.INTEGER,
           primaryKey: true,
-          type: Sequelize.UUID,
-          defaultValue: Sequelize.UUIDV4
+          autoIncrement: true,
         },
         name: {
           type: Sequelize.STRING,
-          allowNull: false
+          allowNull: false,
+          unique: true
         },
-        descriptions: {
+        description: {
           type: Sequelize.STRING,
-          allowNull: false
-        },
-        createdAt: {
           allowNull: false,
-          type: Sequelize.DATE,
-          field: 'created_at'
         },
-        updatedAt: {
-          allowNull: false,
+        created_at: {
           type: Sequelize.DATE,
-          field: 'updated_at'
+          allowNull: false,
+        },
+        updated_at: {
+          type: Sequelize.DATE,
+          allowNull: false,
         }
       }, { transaction })
 
@@ -41,7 +38,6 @@ module.exports = {
   },
   down: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
-
     try {
       await queryInterface.dropTable('publications_types', { transaction })
       await transaction.commit()

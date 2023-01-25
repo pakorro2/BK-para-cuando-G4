@@ -6,74 +6,63 @@ module.exports = {
     try {
       await queryInterface.createTable('publications', {
         id: {
-          allowNull: false,
-          autoIncrement: false,
-          primaryKey: true,
           type: Sequelize.UUID,
-          defaultValue: Sequelize.UUIDV4
+          primaryKey: true,
         },
         profile_id: {
           type: Sequelize.UUID,
           allowNull: false,
-          foreignKey: true,
           references: {
-            model: 'profiles',
-            key: 'id'
+            key: 'id',
+            model: 'profiles'
           },
-          onUpdate: 'CASCADE',
-          onDelete: 'CASCADE'
+          onUpdate: 'RESTRICT',
+          onDelete: 'CASCADE',
         },
-        publications_types_id: {
-          type: Sequelize.UUID,
+        publication_type_id: {
+          type: Sequelize.INTEGER,
           allowNull: false,
-          foreignKey: true,
           references: {
-            model: 'publications_types',
-            key: 'id'
+            key: 'id',
+            model: 'publications_types'
           },
-          onUpdate: 'CASCADE',
-          onDelete: 'CASCADE'
+          onUpdate: 'RESTRICT',
+          onDelete: 'CASCADE',
+        },
+        city_id: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            key: 'id',
+            model: 'cities'
+          },
+          onUpdate: 'RESTRICT',
+          onDelete: 'CASCADE',
         },
         title: {
           type: Sequelize.STRING,
-          allowNull: false
+          allowNull: false,
         },
         description: {
           type: Sequelize.STRING,
-          allowNull: false
         },
         content: {
-          type: Sequelize.STRING,
-          allowNull: false
+          type: Sequelize.TEXT,
+          allowNull: false,
         },
         picture: {
-          type: Sequelize.STRING,
-          allowNull: false
+          type: Sequelize.STRING
         },
-        city_id: {
-          type: Sequelize.UUID,
-          allowNull: false,
-          foreignKey: true,
-          references: {
-            model: 'cities',
-            key: 'id'
-          },
-          onUpdate: 'CASCADE',
-          onDelete: 'CASCADE'
+        image_url: {
+          type: Sequelize.STRING
         },
-        imagen_url: {
-          type: Sequelize.STRING,
-          allowNull: false
-        },
-        createdAt: {
-          allowNull: false,
+        created_at: {
           type: Sequelize.DATE,
-          field: 'created_at'
-        },
-        updatedAt: {
           allowNull: false,
+        },
+        updated_at: {
           type: Sequelize.DATE,
-          field: 'updated_at'
+          allowNull: false,
         }
       }, { transaction })
 
@@ -85,7 +74,6 @@ module.exports = {
   },
   down: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
-
     try {
       await queryInterface.dropTable('publications', { transaction })
       await transaction.commit()
