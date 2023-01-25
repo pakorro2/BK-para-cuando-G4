@@ -1,4 +1,5 @@
 'use strict';
+const uuid = require('uuid')
 const {
   Model
 } = require('sequelize');
@@ -18,7 +19,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Profiles.init({
-    id: DataTypes.UUID,
+    id: {
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: uuid.v4(),
+    },
     user_id: DataTypes.UUID,
     role_id: DataTypes.UUID,
     image_url: {

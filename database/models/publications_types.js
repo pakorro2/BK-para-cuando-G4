@@ -15,7 +15,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Publications_types.init({
-    id: DataTypes.UUID,
+    id: {
+      primaryKey: true,
+      type: DataTypes.UUID,
+    },
     name: DataTypes.STRING,
     descriptions: DataTypes.STRING
   }, {

@@ -14,11 +14,14 @@ module.exports = (sequelize, DataTypes) => {
       Publications.hasMany(models.Votes)
       Publications.belongsTo(models.Profiles)
       Publications.belongsTo(models.Cities)
-      Publications.belongsTo(models.Publications_type)
+      Publications.belongsTo(models.Publications_types)
     }
   }
   Publications.init({
-    id: DataTypes.UUID,
+    id: {
+      primaryKey: true,
+      type: DataTypes.UUID,
+    },
     profile_id: DataTypes.UUID,
     publications_types_id: DataTypes.UUID,
     title: DataTypes.STRING,

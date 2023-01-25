@@ -34,19 +34,16 @@ class UsersService {
     return users
   }
   // { first_name, last_name, email, password, username, token }
-  async createUser({ first_name, last_name, email, password, username, token }) {
+  async createUser({ first_name, last_name, email, password, username }) {
 
     const transaction = await models.sequelize.transaction()
     try {
       let newUser = await models.Users.create({
-        id: uuid.v4(),
         first_name: first_name,
         last_name: last_name,
         email: email,
         password: hashPassword(password),
-        username: username,
-        token: token,
-        // name,
+        username: username
       }, { transaction })
 
       await transaction.commit()
@@ -71,13 +68,12 @@ class UsersService {
     return user
   }
 
-  async findUserByEmail(email) {
-    let user = await models.Users.findOne(email, { raw: true })
-    return user
-  }
+  // async findUserByEmail(email) {
+  //   let user = await models.Users.findOne(email, { raw: true })
+  //   return user
+  // }
 
   async updateUser(id, name) {
-    console.log(name)
     const transaction = await models.sequelize.transaction()
     try {
       let user = await models.Users.findByPk(id)

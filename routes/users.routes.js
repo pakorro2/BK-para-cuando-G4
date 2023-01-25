@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-
+const passportJWT = require('../middlewares/auth.middlewares')
 const {
   getUsers,
   addUser,
@@ -12,7 +12,7 @@ const {
 router.get('/', getUsers)
 router.post('/', addUser)
 router.get('/:id', getUser)
-router.put('/:id', updateUser)
+router.put('/:id', passportJWT.authenticate('jwt', { session: false }), updateUser)
 router.delete('/:id', removeUser)
 
 module.exports = router

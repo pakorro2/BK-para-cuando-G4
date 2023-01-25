@@ -9,8 +9,7 @@ module.exports = {
           allowNull: false,
           autoIncrement: false,
           primaryKey: true,
-          type: Sequelize.UUID,
-          defaultValue: Sequelize.UUIDV4
+          type: Sequelize.UUID
         },
         user_id: {
           type: Sequelize.UUID,
@@ -24,7 +23,7 @@ module.exports = {
           onDelete: 'CASCADE'
         },
         role_id: {
-          type: Sequelize.UUID,
+          type: Sequelize.INTEGER,
           allowNull: false,
           foreignKey: true,
           references: {

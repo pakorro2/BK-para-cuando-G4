@@ -15,7 +15,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Roles.init({
-    id: DataTypes.UUID,
+    id: {
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+    },
     name: {
       type: DataTypes.STRING,
       defaultValue: 'public'

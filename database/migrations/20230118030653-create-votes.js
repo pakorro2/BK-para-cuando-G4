@@ -39,6 +39,12 @@ module.exports = {
           field: 'updated_at'
         }
       }, { transaction })
+      // await queryInterface.addConstraint({
+      //   fields: ['profile_id', 'publication_id'],
+      //   type: 'PRIMARY KEY',
+      //   name: 'votes_profile_id_publication_id_pkey',
+      //   transaction
+      // })
 
       await transaction.commit()
     } catch (error) {

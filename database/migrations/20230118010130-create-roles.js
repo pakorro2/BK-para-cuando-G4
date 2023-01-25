@@ -7,21 +7,20 @@ module.exports = {
       await queryInterface.createTable('roles', {
         id: {
           allowNull: false,
-          autoIncrement: false,
+          autoIncrement: true,
           primaryKey: true,
-          type: Sequelize.UUID,
-          defaultValue: Sequelize.UUIDV4
+          type: Sequelize.INTEGER
         },
         name: {
           type: Sequelize.STRING,
-          allowNull: false
+          allowNull: false,
         },
-        createdAt: {
+        created_at: {
           allowNull: false,
           type: Sequelize.DATE,
           field: 'created_at'
         },
-        updatedAt: {
+        updated_at: {
           allowNull: false,
           type: Sequelize.DATE,
           field: 'updated_at'
