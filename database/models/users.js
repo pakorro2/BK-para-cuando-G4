@@ -1,8 +1,6 @@
-'use strict';
-const uuid = require('uuid');
-const {
-  Model
-} = require('sequelize');
+'use strict'
+const uuid = require('uuid')
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     /**
@@ -16,21 +14,40 @@ module.exports = (sequelize, DataTypes) => {
   }
   Users.init({
     id: {
+      type: DataTypes.BIGINT,
       primaryKey: true,
-      type: DataTypes.UUID,
-      defaultValue: uuid.v4()
     },
-    first_name: DataTypes.STRING,
-    last_name: DataTypes.STRING,
+    first_name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true
+      },
+    },
+    last_name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true
+      },
+    },
     email: {
       type: DataTypes.STRING,
       validate: {
         isEmail: true
       }
     },
-    password: DataTypes.STRING,
-    username: DataTypes.STRING,
-    // email_verified: DataTypes.DATE,
+    username: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true
+      }
+    },
+    email_verified: DataTypes.DATEONLY,
     token: DataTypes.STRING
   }, {
     sequelize,
@@ -47,6 +64,6 @@ module.exports = (sequelize, DataTypes) => {
     // no_timestamps: {
     //   attributes: { exclude: ['created_at', 'updated_at'] }
     // }
-  });
-  return Users;
-};
+  })
+  return Users
+}

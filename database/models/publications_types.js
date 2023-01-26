@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Publications_types extends Model {
     /**
@@ -16,20 +14,32 @@ module.exports = (sequelize, DataTypes) => {
   }
   Publications_types.init({
     id: {
+      type: DataTypes.INTEGER,
       primaryKey: true,
-      type: DataTypes.UUID,
     },
-    name: DataTypes.STRING,
-    descriptions: DataTypes.STRING
+    name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true
+      }
+    },
+    description: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true
+      }
+    }
   }, {
     sequelize,
     modelName: 'Publications_types',
     tableName: 'publications_types',
     timestamps: true,
     underscored: true,
-    no_timestamps: {
-      attributes: { exclude: ['created_at', 'updated_at'] }
+    scopes: {
+      no_timestamps: {
+        attributes: {exclude: ['created_at', 'updated_at']}
+      }
     }
-  });
-  return Publications_types;
-};
+  })
+  return Publications_types
+}

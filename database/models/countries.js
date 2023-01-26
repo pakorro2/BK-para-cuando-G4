@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Countries extends Model {
     /**
@@ -17,19 +15,26 @@ module.exports = (sequelize, DataTypes) => {
   }
   Countries.init({
     id: {
+      type: DataTypes.INTEGER,
       primaryKey: true,
-      type: DataTypes.UUID,
     },
-    name: DataTypes.STRING
+    name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true
+      }
+    }
   }, {
     sequelize,
     modelName: 'Countries',
     tableName: 'countries',
     timestamps: true,
     underscored: true,
-    no_timestamps: {
-      attributes: { exclude: ['created_at', 'updated_at'] }
+    scopes: {
+      no_timestamps: {
+        attributes: {exclude: ['created_at', 'updated_at']}
+      }
     }
-  });
-  return Countries;
-};
+  })
+  return Countries
+}
