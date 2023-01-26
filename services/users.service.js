@@ -4,7 +4,6 @@ const { CustomError } = require('../utils/custom-error')
 const uuid = require('uuid')
 const { hashPassword } = require('../utils/crypto')
 
-
 class UsersService {
 
   constructor() {
@@ -46,8 +45,19 @@ class UsersService {
         username: username
       }, { transaction })
 
+      let newProfile = await models.Profiles.create({
+        id: uuid.v4(),
+        user_id: '4a0b73b0-b1fa-400d-a6fb-14fecf36e091',
+        role_id: 1,
+        image_url:'g18.academlo.io/imgs/defaultProfile.png',
+        codephone: 0,
+        phone: 0,
+        country_id: 1
+      }, { transaction })
+
       await transaction.commit()
-      return newUser
+      return {newUser}
+
     } catch (error) {
       await transaction.rollback()
       throw error
@@ -73,16 +83,30 @@ class UsersService {
   //   return user
   // }
 
-  async updateUser(id, name) {
+  async findUserByToken (token, cb) {
+    process.nextTick( async() => {
+      let user = await models.Users.findOne({
+        where :{
+          token
+        }
+      })
+      if (user?.token === token) {
+        // console.log(user)
+        return cb(null, user)
+      }
+    })
+    return cb(null, null)
+    
+  }
+
+  async updateUser(id, data) {
     const transaction = await models.sequelize.transaction()
     try {
       let user = await models.Users.findByPk(id)
 
       if (!user) throw new CustomError('Not found user', 404, 'Not Found')
 
-      let updatedUser = await user.update({
-        name
-      }, { transaction })
+      let updatedUser = await user.update(data, { transaction })
 
       await transaction.commit()
 
@@ -92,6 +116,7 @@ class UsersService {
       throw error
     }
   }
+
 
   async removeUser(id) {
     const transaction = await models.sequelize.transaction()

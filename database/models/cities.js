@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.UUID,
     },
-    country_id: DataTypes.UUID,
+    country_id: DataTypes.INTEGER,
     name: DataTypes.STRING
   }, {
     sequelize,

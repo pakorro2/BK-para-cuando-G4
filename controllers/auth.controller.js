@@ -1,12 +1,12 @@
-
 const jwt = require('jsonwebtoken')
 const chekUserCredential = require('../services/auth.services')
+const UsersService = require('../services/users.service')
 const jwtSecret = process.env.JWT_SECRET
 
+const userService = new UsersService()
 
 const postLogin = (req, res) => {
   const { email, password } = req.body
-
   if (email && password) {
     chekUserCredential(email, password)
       .then(data => {
@@ -17,6 +17,7 @@ const postLogin = (req, res) => {
             id: data.id,
             role: data.role
           }, jwtSecret)
+          userService.updateUser(data.id, {token:token})
           res.status(200).json({ message: 'Correct credentials', token })
         } else {
           console.log(data)
@@ -30,6 +31,8 @@ const postLogin = (req, res) => {
     res.status(400).json({ message: 'Missing data', fields: { email: 'example@example.com', password: 'string' } })
   }
 }
+
+
 
 module.exports = {
   postLogin

@@ -11,7 +11,7 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4
       },
       county_id: {
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         allowNull: false,
         foreignKey: true,
         references: {

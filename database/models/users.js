@@ -1,5 +1,6 @@
 'use strict';
 const uuid = require('uuid');
+const Profiles = require('./profiles')
 const {
   Model
 } = require('sequelize');
@@ -48,5 +49,14 @@ module.exports = (sequelize, DataTypes) => {
     //   attributes: { exclude: ['created_at', 'updated_at'] }
     // }
   });
+
+  // Users.addHook('afterCreate', async(user, options) => {
+  //   console.log('user created', user.id)
+  //   await Profiles.create({
+  //     user_id: user.id,
+  //     role_id: 1
+  //   })
+  // })
+
   return Users;
 };
