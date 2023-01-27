@@ -57,7 +57,7 @@ const removeRole = async (request, response, next) => {
   try {
     let { id } = request.params
     let role = await rolesService.removeRole(id)
-    return response.json({ results: roles, message: 'removed' })
+    return response.json({ results: role, message: 'removed' })
   } catch (error) {
     next(error)
   }

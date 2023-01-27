@@ -1,12 +1,13 @@
 const express = require('express')
 const router = express.Router()
-const passportJWT = require('../middlewares/auth.middlewares')
+
+
 const {
-    getCities,
-    addCity,
-    getCity,
-    updateCity,
-    removeCity,
+  getCities,
+  addCity,
+  getCity,
+  updateCity,
+  removeCity
 } = require('../controllers/cities.controller')
 
 router.get('/cities', getCities)

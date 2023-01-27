@@ -1,12 +1,12 @@
 const express = require('express')
 const router = express.Router()
-const passportJWT = require('../middlewares/auth.middlewares')
+
 const {
-    getRoles,
-    addRole,
-    getRole,
-    updateRole,
-    removeRole,
+  getRoles,
+  addRole,
+  getRole,
+  updateRole,
+  removeRole,
 } = require('../controllers/roles.controller')
 
 router.get('/roles', getRoles)

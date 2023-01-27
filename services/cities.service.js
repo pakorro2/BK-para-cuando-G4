@@ -2,7 +2,6 @@ const models = require('../database/models')
 const { Op } = require('sequelize')
 const { CustomError } = require('../utils/custom-error')
 const uuid = require('uuid')
-const { hashPassword } = require('../utils/crypto')
 
 
 class CitiesService {
@@ -34,14 +33,14 @@ class CitiesService {
     return cities
   }
   // { first_name, last_name, email, password, username, token }
-  async createCities({ name }) {
+  async createCities(body) {
 
     const transaction = await models.sequelize.transaction()
     try {
       let newCity = await models.City.create({
         id: uuid.v4(),
-        name: name,
-        country_id: body.countryId        //?como importar el id dela tabla country??
+        name: body.name,
+        country_id: body.country_id,   //?como importar el id del country??
       }, { transaction })
 
       await transaction.commit()
@@ -63,7 +62,7 @@ class CitiesService {
   //Return not an Instance raw:true | we also can converted to Json instead
   async findCityById(id) {
     let city = await models.Cities.findByPk(id, { raw: true })
-    return City
+    return city
   }
 
   async updateCity(id, name) {
@@ -94,11 +93,11 @@ class CitiesService {
 
       if (!City) throw new CustomError('Not found user', 404, 'Not Found')
 
-      await city.destroy({ transaction })
+      await City.destroy({ transaction })
 
       await transaction.commit()
 
-      return city
+      return City
     } catch (error) {
       await transaction.rollback()
       throw error

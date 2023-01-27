@@ -2,7 +2,7 @@ const models = require('../database/models')
 const { Op } = require('sequelize')
 const { CustomError } = require('../utils/custom-error')
 const uuid = require('uuid')
-const { hashPassword } = require('../utils/crypto')
+
 
 
 class CountriesService {
@@ -31,9 +31,9 @@ class CountriesService {
     options.distinct = true
 
     const countries = await models.Countries.findAndCountAll(options)
-    return ccountries
+    return countries
   }
-  // { first_name, last_name, email, password, username, token }
+  
   async createCcountries({ name }) {
 
     const transaction = await models.sequelize.transaction()
@@ -54,7 +54,7 @@ class CountriesService {
   async getCountryOr404(id) {
     let country = await models.Countries.findByPk(id)
 
-    if (!ccountry) throw new CustomError('Not found User', 404, 'Not Found')
+    if (!country) throw new CustomError('Not found User', 404, 'Not Found')
 
     return country
   }
@@ -62,14 +62,14 @@ class CountriesService {
   //Return not an Instance raw:true | we also can converted to Json instead
   async findCountryById(id) {
     let country = await models.Countries.findByPk(id, { raw: true })
-    return Country
+    return country
   }
 
   async updateCountry(id, name) {
     console.log(name)
     const transaction = await models.sequelize.transaction()
     try {
-      let ccountry = await models.Countries.findByPk(id)
+      let country = await models.Countries.findByPk(id)
 
       if (!country) throw new CustomError('Not found user', 404, 'Not Found')
 
@@ -89,9 +89,9 @@ class CountriesService {
   async removeCountry(id) {
     const transaction = await models.sequelize.transaction()
     try {
-      let Country = await models.Countries.findByPk(id)
+      let country = await models.Countries.findByPk(id)
 
-      if (!Country) throw new CustomError('Not found user', 404, 'Not Found')
+      if (!country) throw new CustomError('Not found user', 404, 'Not Found')
 
       await country.destroy({ transaction })
 

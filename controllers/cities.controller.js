@@ -23,8 +23,8 @@ const getCities = async (request, response, next) => {
 
 const addCity = async (request, response, next) => {
   try {
-    let newCity = request.body
-    let city = await citiesService.createCity(newCity)
+    let body = request.body
+    let city = await citiesService.createCities(body)
     return response.status(201).json({ results: city })
   } catch (error) {
     next(error)

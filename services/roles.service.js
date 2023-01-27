@@ -2,7 +2,7 @@ const models = require('../database/models')
 const { Op } = require('sequelize')
 const { CustomError } = require('../utils/custom-error')
 const uuid = require('uuid')
-const { hashPassword } = require('../utils/crypto')
+
 
 
 class RolesService {
@@ -33,7 +33,7 @@ class RolesService {
     const roles = await models.Roles.findAndCountAll(options)
     return roles
   }
-  // { first_name, last_name, email, password, username, token }
+  
   async createRoles({ name }) {
 
     const transaction = await models.sequelize.transaction()
@@ -41,7 +41,7 @@ class RolesService {
       let newRole = await models.Role.create({
         id: uuid.v4(),
         name: name,
-    }, { transaction })
+      }, { transaction })
 
       await transaction.commit()
       return newRole
@@ -62,7 +62,7 @@ class RolesService {
   //Return not an Instance raw:true | we also can converted to Json instead
   async findRoleById(id) {
     let role = await models.Roles.findByPk(id, { raw: true })
-    return Role
+    return role
   }
 
   async updateCity(id, name) {
@@ -89,9 +89,9 @@ class RolesService {
   async removeRole(id) {
     const transaction = await models.sequelize.transaction()
     try {
-      let Role = await models.Roles.findByPk(id)
+      let role = await models.Roles.findByPk(id)
 
-      if (!Role) throw new CustomError('Not found user', 404, 'Not Found')
+      if (!role) throw new CustomError('Not found user', 404, 'Not Found')
 
       await role.destroy({ transaction })
 
