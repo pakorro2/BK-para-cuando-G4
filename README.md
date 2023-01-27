@@ -40,10 +40,6 @@ npm run dev
 Open your local browser and verify the BK-para-cuando-G4 API is working by accessing:     
 `http://localhost:9000/ --> status	"Up"
 
-
-## Project Structure
-The folder structure of this app is explained below:
-
 ## Project Structure
 The folder structure of this app is explained below:
 
