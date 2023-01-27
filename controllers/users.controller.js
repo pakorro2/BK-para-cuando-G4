@@ -37,7 +37,7 @@ const addUser = async (request, response, next) => {
         email : 'example@gmail.com *',
         password :  'string *',
         image_url: 'url',
-        codephone: 'number',
+        code_phone: 'number',
         phone: 'number',
         country_id: 'integer'
       }})

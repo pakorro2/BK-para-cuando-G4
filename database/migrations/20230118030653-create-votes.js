@@ -5,46 +5,35 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction()
     try {
       await queryInterface.createTable('votes', {
-        profile_id: {
-          type: Sequelize.UUID,
-          allowNull: false,
-          foreignKey: true,
-          references: {
-            model: 'profiles',
-            key: 'id'
-          },
-          onUpdate: 'CASCADE',
-          onDelete: 'CASCADE'
-
-        },
         publication_id: {
           type: Sequelize.UUID,
-          allowNull: false,
-          foreignKey: true,
+          primaryKey: true,
           references: {
-            model: 'publications',
-            key: 'id'
+            key: 'id',
+            model: 'publications'
           },
-          onUpdate: 'CASCADE',
-          onDelete: 'CASCADE'
+          onUpdate: 'RESTRICT',
+          onDelete: 'CASCADE',
         },
-        createdAt: {
-          allowNull: false,
-          type: Sequelize.DATE,
-          field: 'created_at'
+        profile_id: {
+          type: Sequelize.UUID,
+          primaryKey: true,
+          references: {
+            key: 'id',
+            model: 'profiles'
+          },
+          onUpdate: 'RESTRICT',
+          onDelete: 'CASCADE',
         },
-        updatedAt: {
-          allowNull: false,
+        created_at: {
           type: Sequelize.DATE,
-          field: 'updated_at'
+          allowNull: false,
+        },
+        updated_at: {
+          type: Sequelize.DATE,
+          allowNull: false,
         }
       }, { transaction })
-      // await queryInterface.addConstraint({
-      //   fields: ['profile_id', 'publication_id'],
-      //   type: 'PRIMARY KEY',
-      //   name: 'votes_profile_id_publication_id_pkey',
-      //   transaction
-      // })
 
       await transaction.commit()
     } catch (error) {
@@ -54,7 +43,6 @@ module.exports = {
   },
   down: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
-
     try {
       await queryInterface.dropTable('votes', { transaction })
       await transaction.commit()

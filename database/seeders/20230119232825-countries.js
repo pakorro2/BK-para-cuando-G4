@@ -1,7 +1,8 @@
-'use strict';
-const uuid = require('uuid')
+'use strict'
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
+  // eslint-disable-next-line no-unused-vars
   async up (queryInterface, Sequelize) {
     /**
      * Add seed commands here.
@@ -10,22 +11,23 @@ module.exports = {
      * await queryInterface.bulkInsert('People', [{
      *   name: 'John Doe',
      *   isBetaMember: false
-     * }], {});
+     * }], {})
     */
-    return queryInterface.bulkInsert('countries', [{
-      name: 'Ecuador',
+    return await queryInterface.bulkInsert('countries', [{
+      name: 'Venezuela',
       created_at: new Date(),
       updated_at: new Date()
     }])
   },
 
+  // eslint-disable-next-line no-unused-vars
   async down (queryInterface, Sequelize) {
     /**
      * Add commands to revert seed here.
      *
      * Example:
-     * await queryInterface.bulkDelete('People', null, {});
+     * await queryInterface.bulkDelete('People', null, {})
      */
-    return queryInterface.bulkDelete('countries', null, {})
+    return await queryInterface.bulkDelete('countries', null, {})
   }
-};
+}

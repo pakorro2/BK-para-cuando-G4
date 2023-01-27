@@ -1,8 +1,6 @@
-'use strict';
+'use strict'
 const uuid = require('uuid')
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Profiles extends Model {
     /**
@@ -11,20 +9,19 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Profiles.belongsTo(models.Users)
       Profiles.hasMany(models.Publications)
-      Profiles.hasMany(models.Votes)
+      Profiles.belongsTo(models.Users)
       Profiles.belongsTo(models.Roles)
       Profiles.belongsTo(models.Countries)
+      Profiles.belongsToMany(models.Publications, {through: models.Votes, foreignKey: 'profile_id' })
     }
   }
   Profiles.init({
     id: {
-      primaryKey: true,
       type: DataTypes.UUID,
-      defaultValue: uuid.v4(),
+      primaryKey: true,
     },
-    user_id: DataTypes.UUID,
+    user_id: DataTypes.BIGINT,
     role_id: DataTypes.INTEGER,
     image_url: {
       type: DataTypes.STRING,
@@ -32,18 +29,20 @@ module.exports = (sequelize, DataTypes) => {
       //   isUrl: true
       // }
     },
-    codephone: DataTypes.INTEGER,
+    country_id: DataTypes.INTEGER,
+    code_phone: DataTypes.INTEGER,
     phone: DataTypes.INTEGER,
-    country_id: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Profiles',
     tableName: 'profiles',
     timestamps: true,
     underscored: true,
-    no_timestamps: {
-      attributes: { exclude: ['created_at', 'updated_at'] }
+    scopes: {
+      no_timestamps: {
+        attributes: {exclude: ['created_at', 'updated_at']}
+      }
     }
-  });
-  return Profiles;
-};
+  })
+  return Profiles
+}

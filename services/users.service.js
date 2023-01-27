@@ -40,7 +40,6 @@ class UsersService {
     const transaction = await models.sequelize.transaction()
     try {
       let newUser = await models.Users.create({
-        id: uuid.v4(),
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.email,
@@ -50,11 +49,11 @@ class UsersService {
 
       let newProfile = await models.Profiles.create({
         id: uuid.v4(),
-        user_id: newUser.id,
+        user_id: +newUser.id,
         role_id: 1,
         image_url: user.image_url || 'local.hsot.e/profile/',
-        codephone: +user.codephone || 0,
-        phone: +user.phone || 97123567,
+        code_phone: +user.code_phone || 0,
+        phone: +user.phone || 6567,
         country_id: +user.country_id || 1
       }, { transaction })
 

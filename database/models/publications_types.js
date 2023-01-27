@@ -1,9 +1,7 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
-  class Publications_types extends Model {
+  class PublicationsTypes extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,25 +9,38 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Publications_types.hasMany(models.Publications)
+      PublicationsTypes.hasMany(models.Publications)
     }
   }
-  Publications_types.init({
+  PublicationsTypes.init({
     id: {
+      type: DataTypes.INTEGER,
       primaryKey: true,
-      type: DataTypes.UUID,
+      autoIncrement: true,
     },
-    name: DataTypes.STRING,
-    descriptions: DataTypes.STRING
+    name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true
+      }
+    },
+    description: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true
+      }
+    }
   }, {
     sequelize,
-    modelName: 'Publications_types',
+    modelName: 'PublicationsTypes',
     tableName: 'publications_types',
     timestamps: true,
     underscored: true,
-    no_timestamps: {
-      attributes: { exclude: ['created_at', 'updated_at'] }
+    scopes: {
+      no_timestamps: {
+        attributes: {exclude: ['created_at', 'updated_at']}
+      }
     }
-  });
-  return Publications_types;
-};
+  })
+  return PublicationsTypes
+}

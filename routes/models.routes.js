@@ -10,6 +10,8 @@ function routerModels(app) {
   router.use('/users', routesUsers)
   router.use('/auth', routesAuth)
   // other models here
+
+  
 }
 
 module.exports = routerModels

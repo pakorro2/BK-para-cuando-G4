@@ -6,62 +6,55 @@ module.exports = {
     try {
       await queryInterface.createTable('profiles', {
         id: {
-          allowNull: false,
-          autoIncrement: false,
+          type: Sequelize.UUID,
           primaryKey: true,
-          type: Sequelize.UUID
         },
         user_id: {
-          type: Sequelize.UUID,
+          type: Sequelize.BIGINT,
           allowNull: false,
-          foreignKey: true,
           references: {
-            model: 'users',
-            key: 'id'
+            key: 'id',
+            model: 'users'
           },
-          onUpdate: 'CASCADE',
-          onDelete: 'CASCADE'
+          onUpdate: 'RESTRICT',
+          onDelete: 'CASCADE',
         },
         role_id: {
           type: Sequelize.INTEGER,
           allowNull: false,
-          foreignKey: true,
           references: {
-            model: 'roles',
-            key: 'id'
+            key: 'id',
+            model: 'roles'
           },
-          onUpdate: 'CASCADE',
-          onDelete: 'CASCADE'
-        },
-        image_url: {
-          type: Sequelize.STRING
-        },
-        codephone: {
-          type: Sequelize.INTEGER
-        },
-        phone: {
-          type: Sequelize.INTEGER
+          onUpdate: 'RESTRICT',
+          onDelete: 'CASCADE',
         },
         country_id: {
           type: Sequelize.INTEGER,
           allowNull: false,
-          foreignKey: true,
           references: {
-            model: 'countries',
-            key: 'id'
+            key: 'id',
+            model: 'countries'
           },
-          onUpdate: 'CASCADE',
-          onDelete: 'CASCADE'
+          onUpdate: 'RESTRICT',
+          onDelete: 'CASCADE',
         },
-        createdAt: {
-          allowNull: false,
-          type: Sequelize.DATE,
-          field: 'created_at'
+        image_url: {
+          type: Sequelize.STRING,
         },
-        updatedAt: {
-          allowNull: false,
+        code_phone: {
+          type: Sequelize.INTEGER,
+        },
+        phone: {
+          type: Sequelize.INTEGER,
+        },
+        created_at: {
           type: Sequelize.DATE,
-          field: 'updated_at'
+          allowNull: false,
+        },
+        updated_at: {
+          type: Sequelize.DATE,
+          allowNull: false,
         }
       }, { transaction })
 
@@ -73,7 +66,6 @@ module.exports = {
   },
   down: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
-
     try {
       await queryInterface.dropTable('profiles', { transaction })
       await transaction.commit()
