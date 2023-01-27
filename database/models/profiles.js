@@ -21,8 +21,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       primaryKey: true,
     },
-    user_id: DataTypes.UUID,
-    role_id: DataTypes.UUID,
+    user_id: DataTypes.BIGINT,
+    role_id: DataTypes.INTEGER,
     image_url: {
       type: DataTypes.STRING,
       validate: {
