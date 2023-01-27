@@ -25,12 +25,12 @@ module.exports = (sequelize, DataTypes) => {
     role_id: DataTypes.INTEGER,
     image_url: {
       type: DataTypes.STRING,
-      validate: {
-        isUrl: true
-      }
+      // validate: {
+      //   isUrl: true
+      // }
     },
     country_id: DataTypes.INTEGER,
-    codephone: DataTypes.INTEGER,
+    code_phone: DataTypes.INTEGER,
     phone: DataTypes.INTEGER,
   }, {
     sequelize,

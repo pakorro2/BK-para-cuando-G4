@@ -12,6 +12,8 @@ function routerModels(app) {
   router.use('/auth', routesAuth)
   router.use('/publications-types', publicationsTypesRouter)
   // other models here
+
+  
 }
 
 module.exports = routerModels
