@@ -13,6 +13,8 @@ function routerModels(app) {
   router.use('/auth', routesAuth)
   router.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc))
   // other models here
+
+  
 }
 
 module.exports = routerModels

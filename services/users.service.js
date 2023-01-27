@@ -4,11 +4,11 @@ const { CustomError } = require('../utils/custom-error')
 const uuid = require('uuid')
 const { hashPassword } = require('../utils/crypto')
 
-
 class UsersService {
 
   constructor() {
-
+    // this.User = models.Users
+    // this.Profile = models.Profiles
   }
 
   async findAndCount(query) {
@@ -34,22 +34,57 @@ class UsersService {
     return users
   }
   // { first_name, last_name, email, password, username, token }
-  async createUser({ first_name, last_name, email, password, username }) {
+  // { first_name, last_name, email, password, username, imageProfile, codephone, phone, country_id}
+  async createUser(user) {
 
     const transaction = await models.sequelize.transaction()
     try {
       let newUser = await models.Users.create({
-        first_name: first_name,
-        last_name: last_name,
-        email: email,
-        password: hashPassword(password),
-        username: username
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        password: hashPassword(user.password),
+        username: user.username
       }, { transaction })
 
+      let newProfile = await models.Profiles.create({
+        id: uuid.v4(),
+        user_id: +newUser.id,
+        role_id: 1,
+        image_url: user.image_url || 'local.hsot.e/profile/',
+        code_phone: +user.code_phone || 0,
+        phone: +user.phone || 6567,
+        country_id: +user.country_id || 1
+      }, { transaction })
+
+      // let user = await models.Users.create({
+      //   first_name: first_name,
+      //   last_name: last_name,
+      //   email: email,
+      //   password: hashPassword(password),
+      //   username: username,
+      //   profile:{
+      //     id: uuid.v4(),
+      //     user_id: '4a0b73b0-b1fa-400d-a6fb-14fecf36e091',
+      //     role_id: 1,
+      //     image_url:'g18.academlo.io/imgs/defaultProfile.png',
+      //     codephone: 0,
+      //     phone: 0,
+      //     country_id: 1
+      //   },
+      // },
+      // {
+      //   include:[{
+      //     association: this.User.bind(this.Profile)
+      //   }]
+      // },{transaction})
+
       await transaction.commit()
-      return newUser
+      return {newUser, newProfile}
+
     } catch (error) {
       await transaction.rollback()
+      console.log(error)
       throw error
     }
   }
@@ -73,16 +108,30 @@ class UsersService {
   //   return user
   // }
 
-  async updateUser(id, name) {
+  async findUserByToken (token, cb) {
+    process.nextTick( async() => {
+      let user = await models.Users.findOne({
+        where :{
+          token
+        }
+      })
+      if (user?.token === token) {
+        // console.log(user)
+        return cb(null, user)
+      }
+    })
+    return cb(null, null)
+    
+  }
+
+  async updateUser(id, data) {
     const transaction = await models.sequelize.transaction()
     try {
       let user = await models.Users.findByPk(id)
 
       if (!user) throw new CustomError('Not found user', 404, 'Not Found')
 
-      let updatedUser = await user.update({
-        name
-      }, { transaction })
+      let updatedUser = await user.update(data, { transaction })
 
       await transaction.commit()
 
@@ -92,6 +141,7 @@ class UsersService {
       throw error
     }
   }
+
 
   async removeUser(id) {
     const transaction = await models.sequelize.transaction()

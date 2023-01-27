@@ -1,10 +1,32 @@
 const JwtStrategy = require('passport-jwt').Strategy
 
-
-const ExtractJwt = require('passport-jwt/').ExtractJwt //? Extrae los token de los headers de mi peticion
+// const BearerStrategy = require('passport-http-bearer').Strategy
 const passport = require('passport')
-const jwtSecret = process.env.JWT_SECRET
+
+// const UsersService = require('../services/users.service')
 const models = require('../database/models')
+const ExtractJwt = require('passport-jwt/').ExtractJwt //? Extrae los token de los headers de mi peticion
+// const passport = require('passport')
+const jwtSecret = process.env.JWT_SECRET
+
+// const userService = new UsersService()
+
+
+// passport.use('bearer', new BearerStrategy(
+//   (token, done) => {
+//     userService.findUserByToken(token, (err, user) => {
+//       if (err) { 
+//         return done(err) 
+//       }
+//       if (!user) { 
+//         return done(null, false) 
+//       }
+      
+//       return done(null, user, { scope: 'all' })
+//     })
+//   }
+// ))
+
 
 
 const options = {
