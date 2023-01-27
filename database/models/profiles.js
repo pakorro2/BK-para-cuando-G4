@@ -28,9 +28,9 @@ module.exports = (sequelize, DataTypes) => {
     role_id: DataTypes.INTEGER,
     image_url: {
       type: DataTypes.STRING,
-      validate: {
-        isUrl: true
-      }
+      // validate: {
+      //   isUrl: true
+      // }
     },
     codephone: DataTypes.INTEGER,
     phone: DataTypes.INTEGER,

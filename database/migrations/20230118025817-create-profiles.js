@@ -40,8 +40,7 @@ module.exports = {
           type: Sequelize.INTEGER
         },
         phone: {
-          type: Sequelize.INTEGER,
-          unique: true
+          type: Sequelize.INTEGER
         },
         country_id: {
           type: Sequelize.INTEGER,

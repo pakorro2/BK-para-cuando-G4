@@ -5,8 +5,10 @@ class Checkers{
 
   constructor(){}
 
-  async isAnyRoleByList(roles){
-
+  async isAnyRoleByList(request, response, next, roles){
+    const user_id = request.user
+    
+    console.log(user_id)
   }
 
   async isRoleAdmin(){
