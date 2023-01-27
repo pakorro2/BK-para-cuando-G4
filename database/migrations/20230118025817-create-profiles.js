@@ -47,7 +47,6 @@ module.exports = {
         },
         phone: {
           type: Sequelize.INTEGER,
-          unique: true,
         },
         created_at: {
           type: Sequelize.DATE,
