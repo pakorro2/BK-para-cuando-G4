@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       Publications.belongsToMany(models.Profiles, {through: models.Votes, foreignKey: 'publication_id' })
       Publications.belongsTo(models.Profiles)
       Publications.belongsTo(models.Cities)
-      Publications.belongsTo(models.Publications_types)
+      Publications.belongsTo(models.PublicationsTypes)
     }
   }
   Publications.init({
