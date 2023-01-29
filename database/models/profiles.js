@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       Profiles.belongsTo(models.Users)
       Profiles.belongsTo(models.Roles)
       Profiles.belongsTo(models.Countries)
-      Profiles.belongsToMany(models.Publications, {through: models.Votes, foreignKey: 'profile_id' })
+      Profiles.belongsToMany(models.Publications, { through: models.Votes, foreignKey: 'profile_id' })
     }
   }
   Profiles.init({
@@ -23,11 +23,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     user_id: DataTypes.BIGINT,
     role_id: DataTypes.INTEGER,
-    image_url: {
+    image_url:
+    {
       type: DataTypes.STRING,
-      // validate: {
-      //   isUrl: true
-      // }
+      //validate: {
+        //isUrl: true,
+      //}
     },
     country_id: DataTypes.INTEGER,
     code_phone: DataTypes.INTEGER,
@@ -40,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     scopes: {
       no_timestamps: {
-        attributes: {exclude: ['created_at', 'updated_at']}
+        attributes: { exclude: ['created_at', 'updated_at'] }
       }
     }
   })
