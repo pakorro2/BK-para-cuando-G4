@@ -18,9 +18,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Profiles.init({
-    id: {
-      type: DataTypes.UUID,
-      primaryKey:true
+    id: { type:DataTypes.UUID,
+          primaryKey:true
     },
     user_id: DataTypes.UUID,
     role_id: DataTypes.UUID,
