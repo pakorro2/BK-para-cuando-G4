@@ -64,7 +64,7 @@ module.exports = {
       throw error
     }
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
       await queryInterface.dropTable('profiles', { transaction })
