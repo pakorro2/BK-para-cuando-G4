@@ -13,8 +13,9 @@ const postLogin = (req, res) => {
         if (data) {
           console.log(data)
           const token = jwt.sign({
-            user_name: data.user_name,
-            id: data.id,
+            username: data.username,
+            user_id: data.id,
+            // profile_id: data.profile_id,
             role: data.role
           }, jwtSecret)
           userService.updateUser(data.id, {token:token})

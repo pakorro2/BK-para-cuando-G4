@@ -3,6 +3,7 @@ const swaggerUI = require('swagger-ui-express')
 const swaggerDoc = require('../libs/swagger.json')
 const routesUsers = require('./users.routes')
 const routesAuth = require('./auth.routes')
+const publicationsRouter = require('./publications.routes')
 const publicationsTypesRouter = require('./publications_types.routes')
 
 function routerModels(app) {
@@ -12,6 +13,7 @@ function routerModels(app) {
 
   router.use('/users', routesUsers)
   router.use('/auth', routesAuth)
+  router.use('/publications', publicationsRouter)
   router.use('/publications-types', publicationsTypesRouter)
   router.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc))
   // other models here
