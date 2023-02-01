@@ -4,26 +4,30 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
-      await queryInterface.createTable('Tags', {
+      await queryInterface.createTable('publication_tags', {
         id: {
           allowNull: false,
           autoIncrement: true,
           primaryKey: true,
-          type: Sequelize.BIGINT,
-          onUpdate: 'CASCADE',
-          onDelete: 'RESTRICT'
+          type: Sequelize.BIGINT
         },
-        publication_tags_id: {
+        tag_id: {
           type: Sequelize.BIGINT,
+          allowNull: false,
           foreignKey: true,
           references: {
             key: 'id',
-            model: 'publication_tags'
+            model: 'Tags'
           }
         },
-        name: {
-          type: Sequelize.STRING,
-          allowNull: false
+        publication_id: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          foreignKey: true,
+          references: {
+            key: 'id',
+            model: 'publications'
+          },
         },
         createdAt: {
           allowNull: false,
@@ -32,7 +36,7 @@ module.exports = {
         updatedAt: {
           allowNull: false,
           type: Sequelize.DATE
-        }
+        },
       }, { transaction })
 
       await transaction.commit()
@@ -44,7 +48,7 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
     const transaction = await queryInterface.sequelize.transaction()
     try {
-      await queryInterface.dropTable('Tags', { transaction })
+      await queryInterface.dropTable('publication_tags', { transaction })
       await transaction.commit()
     } catch (error) {
       await transaction.rollback()

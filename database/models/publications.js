@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       Publications.belongsTo(models.Profiles)
       Publications.belongsTo(models.Cities)
       Publications.belongsTo(models.PublicationsTypes)
+      Publications.belongsTo(models.Tags)
     }
   }
   Publications.init({
@@ -27,6 +28,14 @@ module.exports = (sequelize, DataTypes) => {
     content: DataTypes.TEXT,
     picture: DataTypes.STRING,
     city_id: DataTypes.STRING,
+    tag_id:{
+      type:DataTypes.BIGINT,
+      foreignKey:true,
+      references:{
+        key:'id',
+        tableName:'Tags'
+      }
+    },
     imagen_url: {
       type: DataTypes.STRING,
       validate: {
