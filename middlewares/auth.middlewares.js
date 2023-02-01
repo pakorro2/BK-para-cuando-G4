@@ -21,7 +21,7 @@ const jwtSecret = process.env.JWT_SECRET
 //       if (!user) { 
 //         return done(null, false) 
 //       }
-      
+
 //       return done(null, user, { scope: 'all' })
 //     })
 //   }

@@ -11,13 +11,13 @@ const postLogin = (req, res) => {
     chekUserCredential(email, password)
       .then(data => {
         if (data) {
-          console.log(data)
           const token = jwt.sign({
-            user_name: data.user_name,
             id: data.id,
-            role: data.role
+            username: data.username,
+            profile_id: data.Profiles[0].id,
+            role: data.Profiles[0].Role.name
           }, jwtSecret)
-          userService.updateUser(data.id, {token:token})
+          userService.updateUser(data.id, { token: token })
           res.status(200).json({ message: 'Correct credentials', token })
         } else {
           console.log(data)
