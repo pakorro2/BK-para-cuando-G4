@@ -1,5 +1,3 @@
-const { request } = require('express')
-const { use } = require('passport')
 const PublicationsService = require('../services/publications.service')
 const { getPagination, getPagingData } = require('../utils/sequelize-utils')
 
