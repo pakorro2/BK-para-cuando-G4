@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://localhost:9000/api/v1",
+      "url": "http://localhost:9000/api/v1",
       "description": "change this value to use in production"
     }
   ],
@@ -17,7 +17,7 @@
         "tags": [
           "Publications"
         ],
-        "summary": "Returns a list of publications.",
+        "summary": "Returns a list of publications filtered.",
         "description": "allows you to filter all publications",
         "responses": {
           "200": {
@@ -25,10 +25,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "items": {
-                    "type": "string"
-                  }
+                  "$ref": "#/components/schemas/Publication"
                 }
               }
             }
@@ -36,12 +33,7 @@
           "400": {
             "description": "Publications not found"
           }
-        },
-        "security": [
-          {
-            "api_key": []
-          }
-        ]
+        }
       },
       "post": {
         "tags": [
@@ -49,18 +41,16 @@
         ],
         "summary": "Returns a list of publications.",
         "description": "allows you to filter all publications",
-        "parameters": [
-          {
-            "name": "getPublicationById",
-            "in": "path",
-            "description": "ID of publication to return",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
+        "parameters": {
+          "$ref": "#/components/schemas/Publication",
+          "in": "body",
+          "description": "ID of publication to return",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "format": "uuid"
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "successful operation",
@@ -78,15 +68,10 @@
           "400": {
             "description": "Publications not found"
           }
-        },
-        "security": [
-          {
-            "api_key": []
-          }
-        ]
+        }
       }
     },
-    "/publications/:publication_id": {
+    "/publications/{id}": {
       "get": {
         "tags": [
           "Publications"
@@ -96,7 +81,7 @@
         "operationId": "getPublicationById",
         "parameters": [
           {
-            "name": "getPublicationById",
+            "name": "id",
             "in": "path",
             "description": "ID of publication to return",
             "required": true,
@@ -123,17 +108,7 @@
           "404": {
             "description": "publication not found"
           }
-        },
-        "security": [
-          {
-            "api_key": []
-          },
-          {
-            "petstore_auth": [
-              "write:publications"
-            ]
-          }
-        ]
+        }
       },
       "delete": {
         "tags": [
@@ -167,15 +142,7 @@
           "400": {
             "description": "Invalid publication value"
           }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ]
+        }
       }
     },
     "/publications/:publication_id/vote": {
@@ -211,18 +178,10 @@
           "400": {
             "description": "Invalid publication value"
           }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ]
+        }
       }
     },
-    "/publicationstypes": {
+    "/publications-types": {
       "get": {
         "tags": [
           "Publications Types"
@@ -243,7 +202,7 @@
         }
       }
     },
-    "/publicationstypes/publication_type_id": {
+    "/publications-types/publication_type_id": {
       "get": {
         "tags": [
           "Publications Types"
@@ -472,62 +431,33 @@
           "Authentication"
         ],
         "summary": "Logs user into the system",
-        "description": "",
-        "operationId": "loginUser",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "query",
-            "description": "The user name for login",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "password",
-            "in": "query",
-            "description": "The password for login in clear text",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
+        "description": "Authentication users",
+        "consumes": [
+          "application/json"
         ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "headers": {
-              "X-Rate-Limit": {
-                "description": "calls per hour allowed by the user",
-                "schema": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              },
-              "X-Expires-After": {
-                "description": "date in UTC when token expires",
-                "schema": {
-                  "type": "string",
-                  "format": "date-time"
-                }
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
               }
             },
-            "content": {
-              "application/xml": {
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Correct Credentials!"
           },
           "400": {
-            "description": "Invalid username/password supplied"
+            "description": "Missing Data"
+          },
+          "401": {
+            "description": "Invalid Credentials"
           }
         }
       }
@@ -582,6 +512,18 @@
     }
   },
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "Access token is missing or invalid"
+      }
+    },
     "schemas": {
       "User": {
         "type": "object",
@@ -608,7 +550,7 @@
           },
           "password": {
             "type": "string",
-            "example": "A12356b"
+            "example": "xxxxxx"
           },
           "email_verified": {
             "type": "string",
@@ -660,11 +602,12 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "format": "uuid"
+            "type": "integer",
+            "format": "serial"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "México"
           }
         },
         "xml": {
@@ -679,7 +622,8 @@
             "format": "serial"
           },
           "country_id": {
-            "type": "integer"
+            "type": "integer",
+            "format": "serial"
           },
           "name": {
             "type": "string"
@@ -697,10 +641,12 @@
             "format": "serial"
           },
           "state_id": {
-            "type": "integer"
+            "type": "integer",
+            "format": "serial"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "Colima"
           }
         },
         "xml": {
@@ -715,7 +661,8 @@
             "format": "serial"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "public"
           }
         },
         "xml": {
@@ -729,20 +676,20 @@
         },
         "properties": {
           "id": {
-            "type": "string",
-            "format": "uuid"
+            "type": "integer",
+            "format": "int64"
           },
           "profile_id:": {
             "type": "string",
             "format": "uuid"
           },
           "publication_type_id": {
-            "type": "string",
-            "format": "uuid"
+            "type": "integer",
+            "format": "serial"
           },
           "city_id": {
-            "type": "string",
-            "format": "uuid"
+            "type": "integer",
+            "format": "serial"
           },
           "title": {
             "type": "string"
@@ -772,8 +719,8 @@
         },
         "properties": {
           "id": {
-            "type": "string",
-            "format": "uuid"
+            "type": "integer",
+            "format": "serial"
           },
           "name": {
             "type": "string"
@@ -796,9 +743,18 @@
           "name": {
             "type": "string"
           }
-        },
-        "xml": {
-          "name": "tag"
+        }
+      },
+      "Login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "pakorro2@gmail.com"
+          },
+          "password": {
+            "type": "string"
+          }
         }
       }
     }

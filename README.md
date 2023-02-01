@@ -34,7 +34,7 @@ npm run dev
 
 - API Document endpoints
 
-   swagger-ui  Endpoint : http://localhost:9000/docs 
+   swagger-ui  Endpoint : http://localhost:9000/api/v1/docs
    
 
 Open your local browser and verify the BK-para-cuando-G4 API is working by accessing:     
@@ -133,5 +133,5 @@ Next we will run the commands to execute the migrations and seeders of the proje
 ```bash
 # These commands will create the tables in the database according to the configuration of the models and the initial test data.
 npx sequelize db:migrations
-npx sequelize db:seeders
+npx sequelize db:seeders:all
 ```
