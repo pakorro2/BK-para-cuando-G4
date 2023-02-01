@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Publications.belongsToMany(models.Profiles, {through: models.Votes, foreignKey: 'publication_id' })
+      Publications.belongsToMany(models.Profiles, { through: models.Votes, foreignKey: 'publication_id' })
       Publications.belongsTo(models.Profiles)
       Publications.belongsTo(models.Cities)
       Publications.belongsTo(models.PublicationsTypes)
-      Publications.belongsTo(models.Tags)
+      Publications.belongsToMany(models.Tags, { as: 'tags', through: models.publication_tags, foreignKey: 'publication_id' })
     }
   }
   Publications.init({
@@ -28,12 +28,12 @@ module.exports = (sequelize, DataTypes) => {
     content: DataTypes.TEXT,
     picture: DataTypes.STRING,
     city_id: DataTypes.STRING,
-    tag_id:{
-      type:DataTypes.BIGINT,
-      foreignKey:true,
-      references:{
-        key:'id',
-        tableName:'Tags'
+    tag_id: {
+      type: DataTypes.BIGINT,
+      foreignKey: true,
+      references: {
+        key: 'id',
+        tableName: 'Tags'
       }
     },
     imagen_url: {
@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     scopes: {
       no_timestamps: {
-        attributes: {exclude: ['created_at', 'updated_at']}
+        attributes: { exclude: ['created_at', 'updated_at'] }
       }
     }
   })
