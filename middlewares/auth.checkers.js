@@ -1,26 +1,9 @@
-const models = require('../database/models')
-
-
-class Checkers{
-
-  constructor(){}
-
-  async isAnyRoleByList(request, response, next, roles){
-    const user_id = request.user
-    
-    console.log(user_id)
+const roleMiddleware = (request, response, next) => {
+  if (request.user.role === 'admin') {
+    next()
+  } else {
+    response.status(401).json({ message: 'Permission Denied' })
   }
-
-  async isRoleAdmin(){
-
-  }
-
-  async isAdminOrSameUser(){
-
-  }
-
-  async isTheSameUser(){
-
-  }
-
 }
+
+module.exports = roleMiddleware
