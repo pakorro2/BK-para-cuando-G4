@@ -7,20 +7,24 @@ module.exports = {
       await queryInterface.createTable('votes', {
         publication_id: {
           type: Sequelize.UUID,
+          allowNull:false,
+          foreignKey: true,
           primaryKey: true,
           references: {
-            key: 'id',
-            model: 'publications'
+            model: 'publications',
+            key: 'id'
           },
           onUpdate: 'RESTRICT',
           onDelete: 'CASCADE',
         },
         profile_id: {
           type: Sequelize.UUID,
+          allowNull:false,
+          foreignKey: true,
           primaryKey: true,
           references: {
-            key: 'id',
-            model: 'profiles'
+            model: 'profiles',
+            key: 'id'
           },
           onUpdate: 'RESTRICT',
           onDelete: 'CASCADE',

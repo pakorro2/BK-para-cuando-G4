@@ -5,7 +5,7 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction()
     try {
       await queryInterface.createTable('profiles', {
-        id: {
+        profile_id: {
           type: Sequelize.UUID,
           primaryKey: true,
         },
