@@ -1,4 +1,4 @@
-const TagsService = require('../services/tags.services')
+const TagsService = require('../services/tags.service')
 const { getPagination, getPagingData } = require('../utils/sequelize-utils')
 
 const tagsService = new TagsService()
