@@ -99,32 +99,6 @@ class PublicationsService {
       throw error
     }
   }
-
-  async createVote(user_id, publication_id) {
-    const profile = await models.Profiles.findOne({
-      where: {
-        user_id: user_id
-      }
-    })
-    const publication = await models.Publications.findByPk(publication_id)
-    console.log(publication)
-    console.log(profile)
-    if (!(profile && publication)) { return false }
-
-    const transaction = await models.sequelize.transaction()
-    try {
-      const newVote = await models.Votes.create({
-        profile_id: profile.id,
-        publication_id: publication.id
-      }, { transaction })
-
-      await transaction.commit()
-      return newVote
-    } catch (error) {
-      await transaction.rollback()
-      throw error
-    }
-  }
 }
 
 module.exports = PublicationsService
