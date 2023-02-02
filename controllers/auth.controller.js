@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const chekUserCredential = require('../services/auth.services')
+const { chekUserCredential, createUserAndProfile, checkInfoToken } = require('../services/auth.services')
 const UsersService = require('../services/users.service')
 const jwtSecret = process.env.JWT_SECRET
 
@@ -11,13 +11,13 @@ const postLogin = (req, res) => {
     chekUserCredential(email, password)
       .then(data => {
         if (data) {
-          console.log(data)
           const token = jwt.sign({
-            user_name: data.user_name,
-            id: data.id,
-            role: data.role
+            username: data.username,
+            user_id: data.id,
+            profile_id: data.Profiles[0].id,
+            role: data.Profiles[0].Role.name
           }, jwtSecret)
-          userService.updateUser(data.id, {token:token})
+          userService.updateUser(data.id, { token: token })
           res.status(200).json({ message: 'Correct credentials', token })
         } else {
           console.log(data)
@@ -31,9 +31,53 @@ const postLogin = (req, res) => {
     res.status(400).json({ message: 'Missing data', fields: { email: 'example@example.com', password: 'string' } })
   }
 }
+const postSignUp = async (request, response, next) => {
+  try {
+    let { first_name, last_name, email, password, username } = request.body
+    if (first_name && last_name && email && password && username) {
+      let user = await createUserAndProfile(request.body)
+      console.log(user)
+      return response.status(201).json({
+        results: {
+          user: user.newUser,
+          profile: user.newProfile
+        }
+      })
+    } else {
+      return response.status(400).json({
+        messege: 'missing fields', fields: {
+          first_name: 'string *',
+          last_name: 'string *',
+          username: 'string *',
+          email: 'example@gmail.com *',
+          password: 'string *',
+          image_url: 'url',
+          code_phone: 'number',
+          phone: 'number',
+          country_id: 'integer'
+        }
+      })
+    }
+  } catch (error) {
+    next(error)
+  }
+}
 
+const getMyUser = async (request, response, next) => {
+  try {
+    const id = request.user.id
+    console.log(id)
+    const userInfo = await checkInfoToken(id)
+    return response.status(201).json({ result: userInfo })
+  } catch (error) {
+    next(error)
+  }
+
+}
 
 
 module.exports = {
-  postLogin
+  postLogin,
+  postSignUp,
+  getMyUser
 }

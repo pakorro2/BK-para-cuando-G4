@@ -21,7 +21,7 @@ const jwtSecret = process.env.JWT_SECRET
 //       if (!user) { 
 //         return done(null, false) 
 //       }
-      
+
 //       return done(null, user, { scope: 'all' })
 //     })
 //   }
@@ -36,7 +36,7 @@ const options = {
 passport.use(
   new JwtStrategy(options, async (tokenDecoded, done) => {
     //? done(error, tokenDecoded)
-    const user = await models.Users.findByPk(tokenDecoded.id)
+    const user = await models.Users.findByPk(tokenDecoded.user_id)
     try {
       if (!user) {
         return done(null, false)
