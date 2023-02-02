@@ -11,9 +11,9 @@ const {
 
 router.get('/tags', passport.authenticate('jwt', { session: false }), getTags)
 router.post('/tags', passport.authenticate('jwt', { session: false }), addTags)
-router.get('/:tag_id', getTagsById)
-router.put('/:tag_id', passport.authenticate('jwt', { session: false }), updateTags)
-router.delete('/:tag_id', removeTags)
+router.get('tags/:id', getTagsById)
+router.put('tags/:id', passport.authenticate('jwt', { session: false }), updateTags)
+router.delete('tags/:id', removeTags)
 
 //!falta ruta de publications
 //?se usa solamente id o tag_id
