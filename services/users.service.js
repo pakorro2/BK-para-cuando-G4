@@ -14,6 +14,16 @@ class UsersService {
   async findAndCount(query) {
     const options = {
       where: {},
+      attributes: {
+        exclude: ['password', 'email_verified', 'token', 'created_at', 'updated_at']
+      }, include: {
+        model: models.Profiles,
+        attributes: ['image_url', 'code_phone', 'phone', 'country_id'],
+        include: {
+          model: models.Roles,
+          attributes: ['name']
+        }
+      }
     }
 
     const { limit, offset } = query
@@ -80,7 +90,7 @@ class UsersService {
       // },{transaction})
 
       await transaction.commit()
-      return {newUser, newProfile}
+      return { newUser, newProfile }
 
     } catch (error) {
       await transaction.rollback()
@@ -90,7 +100,15 @@ class UsersService {
   }
   //Return Instance if we do not converted to json (or raw:true)
   async getUserOr404(id) {
-    let user = await models.Users.findByPk(id)
+    let user = await models.Users.findByPk(id, {
+      attributes: {
+        exclude: ['password', 'email_verified', 'token', 'created_at', 'updated_at']
+      }, include: {
+        model: models.Profiles,
+        attributes: ['image_url', 'code_phone', 'phone', 'country_id', 'role_id']
+
+      }
+    })
 
     if (!user) throw new CustomError('Not found User', 404, 'Not Found')
 
@@ -99,7 +117,16 @@ class UsersService {
 
   //Return not an Instance raw:true | we also can converted to Json instead
   async findUserById(id) {
-    let user = await models.Users.findByPk(id, { raw: true })
+    let user = await models.Users.findByPk(id, {
+      attributes: {
+        exclude: ['password', 'email_verified', 'token', 'created_at', 'updated_at']
+      },
+      include: {
+        model: models.Profiles,
+        attributes: ['image_url', 'code_phone', 'phone', 'country_id', 'role_id']
+
+      }
+    }, { raw: true })
     return user
   }
 
@@ -108,10 +135,10 @@ class UsersService {
   //   return user
   // }
 
-  async findUserByToken (token, cb) {
-    process.nextTick( async() => {
+  async findUserByToken(token, cb) {
+    process.nextTick(async () => {
       let user = await models.Users.findOne({
-        where :{
+        where: {
           token
         }
       })
@@ -121,7 +148,7 @@ class UsersService {
       }
     })
     return cb(null, null)
-    
+
   }
 
   async updateUser(id, data) {
