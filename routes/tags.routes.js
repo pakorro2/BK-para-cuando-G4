@@ -9,11 +9,11 @@ const {
   removeTags,
 } = require('../controllers/tags.controller')
 
-router.get('/tags', passport.authenticate('jwt', { session: false }), getTags)
+router.get('/tags', getTags)
 router.post('/tags', passport.authenticate('jwt', { session: false }), addTags)
-router.get('tags/:id', getTagsById)
+router.get('tags/:id',passport.authenticate('jwt', { session: false }), getTagsById)
 router.put('tags/:id', passport.authenticate('jwt', { session: false }), updateTags)
-router.delete('tags/:id', removeTags)
+router.delete('tags/:id',passport.authenticate('jwt', { session: false }), removeTags)
 
 //!falta ruta de publications
 //?se usa solamente id o tag_id
