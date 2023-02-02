@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Votes.init({
-    Profile_id: DataTypes.UUID,
+    profile_id: DataTypes.UUID,
     publication_id: DataTypes.UUID
   }, {
     sequelize,

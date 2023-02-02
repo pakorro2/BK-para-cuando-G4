@@ -1,10 +1,10 @@
 const VotesService = require('../services/votes.service')
-const UsersService = require('../services/users.service')
+// const UsersService = require('../services/users.service')
 
 // const { getPagination, getPagingData } = require('../utils/sequelize-utils')
 
 const votesService = new VotesService()
-const userService = new UsersService()
+// const userService = new UsersService()
 
 const getUserVotes = async (request, response, next) => {
   try {
@@ -27,9 +27,9 @@ const addOrDeleteVote = async (request, response, next) => {
     const profile_id = request.user.profile_id
     const publication_id = request.params.id
 
-    const vote = await votesService.createOrDiscardVote(profile_id, publication_id)
+    const vote = await votesService.createOrDestroyVote(profile_id, publication_id)
 
-    if (!vote) { return response.status(404).json({ message: 'id not found' }) }
+    if (!vote) { return response.status(202).json({ message: 'discarded vote' }) }
 
     return response.status(201).json({ result: vote, message: 'add vote' })
   } catch (error) {

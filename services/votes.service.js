@@ -1,4 +1,5 @@
 const models = require('../database/models')
+const CustomError = require('../utils/custom-error')
 
 class VotesService {
 
@@ -14,12 +15,25 @@ class VotesService {
     return votes
   }
 
-  async createOrDiscardVote(profile_id, publication_id) {
+  async createOrDestroyVote(profile_id, publication_id) {
     const publication = await models.Publications.findByPk(publication_id)
-    if (!(publication)) { return false }
+    if (!publication) { throw new CustomError('Not found Publication', 404, 'Not found:') }
 
     const transaction = await models.sequelize.transaction()
     try {
+      const oldVote = await models.Votes.findOne({
+        where: {
+          profile_id,
+          publication_id
+        }
+      })
+
+      if (oldVote) {
+        await oldVote.destroy({ transaction })
+
+        await transaction.commit()
+        return null
+      }
       const newVote = await models.Votes.create({
         profile_id: profile_id,
         publication_id: publication.id
