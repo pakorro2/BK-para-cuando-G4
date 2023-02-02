@@ -31,6 +31,24 @@ class PublicationsService {
     return publications
   }
 
+  async findAllPublicationByUser(user_id) {
+    const profile = await models.Profiles.findOne({
+      where: {
+        user_id: user_id
+      }
+    })
+    if (!profile) throw new CustomError('Not found profile', 404, 'Not Found')
+
+    const publications = await models.Publications.findAll({
+      where: {
+        profile_id: profile.id
+      }
+    })
+    // if (!publications) throw new CustomError('Not found any publication', 404, 'Not Found')
+    console.log(publications)
+    return publications
+  }
+
   async findPublicationById(id) {
     const publication = await models.Publications.findByPk(id)
     if (!publication) throw new CustomError('Not found publication', 404, 'Not Found')
@@ -38,18 +56,13 @@ class PublicationsService {
     return publication
   }
 
-  async createPublication(user_id, publication) {
-    const profile = await models.Profiles.findOne({
-      where: {
-        user_id: user_id
-      }
-    })
+  async createPublication(profile_id, publication) {
 
     const transaction = await models.sequelize.transaction()
     try {
       const newPublication = await models.Publications.create({
         id: uuid(),
-        profile_id: profile.id,
+        profile_id: profile_id,
         publication_type_id: publication.publication_type_id,
         city_id: publication.city_id,
         title: publication.title,

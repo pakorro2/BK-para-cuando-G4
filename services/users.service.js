@@ -1,14 +1,14 @@
 const models = require('../database/models')
 const { Op } = require('sequelize')
-const { CustomError } = require('../utils/custom-error')
+const CustomError = require('../utils/custom-error')
 const uuid = require('uuid')
 const { hashPassword } = require('../utils/crypto')
+
 
 class UsersService {
 
   constructor() {
-    // this.User = models.Users
-    // this.Profile = models.Profiles
+
   }
 
   async findAndCount(query) {
@@ -168,7 +168,6 @@ class UsersService {
       throw error
     }
   }
-
 
   async removeUser(id) {
     const transaction = await models.sequelize.transaction()
