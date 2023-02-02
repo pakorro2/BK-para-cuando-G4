@@ -28,6 +28,19 @@ class PublicationsService {
     options.distinct = true
 
     const publications = await models.Publications.findAndCountAll(options)
+
+    const { tags } = query
+    if (tags) {
+      let tagsIDs = tags.split(',')
+      options.include.push({ // El options que les di en el ejemplo 
+        model: models.Tags,
+        as: 'tags',
+        required: true,
+        where: { id: tagsIDs },
+        through: { attributes: [] }
+      })
+    }
+
     return publications
   }
 
@@ -99,6 +112,8 @@ class PublicationsService {
       throw error
     }
   }
+
+
 }
 
 module.exports = PublicationsService
