@@ -10,6 +10,10 @@ class PublicationsTypesService {
   async findAndCount(query) {
     const options = {
       where: {},
+      attributes: {
+        exclude: ['created_at', 'updated_at']
+
+      }
     }
 
     const { limit, offset } = query
@@ -49,7 +53,12 @@ class PublicationsTypesService {
   }
   //Return Instance if we do not converted to json (or raw:true)
   async getPublicationTypeOr404(id) {
-    let publicationType = await models.PublicationsTypes.findByPk(id)
+    let publicationType = await models.PublicationsTypes.findByPk(id, {
+      attributes: {
+        exclude: ['created_at', 'updated_at']
+
+      }
+    })
 
     if (!publicationType) throw new CustomError('Not found publicationType', 404, 'Not Found')
 

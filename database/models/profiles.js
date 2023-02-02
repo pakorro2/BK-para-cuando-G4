@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       Profiles.belongsTo(models.Users)
       Profiles.belongsTo(models.Roles)
       Profiles.belongsTo(models.Countries)
-      Profiles.belongsToMany(models.Publications, {through: models.Votes, foreignKey: 'profile_id' })
+      Profiles.belongsToMany(models.Publications, { through: models.Votes, foreignKey: 'profile_id' })
     }
   }
   Profiles.init({
@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     scopes: {
       no_timestamps: {
-        attributes: {exclude: ['created_at', 'updated_at']}
+        attributes: { exclude: ['created_at', 'updated_at'] }
       }
     }
   })

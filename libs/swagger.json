@@ -41,29 +41,9 @@
         ],
         "summary": "Returns a list of publications.",
         "description": "allows you to filter all publications",
-        "parameters": {
-          "$ref": "#/components/schemas/Publication",
-          "in": "body",
-          "description": "ID of publication to return",
-          "required": true,
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          }
-        },
         "responses": {
           "200": {
-            "description": "successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
+            "description": "successful operation"
           },
           "400": {
             "description": "Publications not found"
@@ -145,7 +125,7 @@
         }
       }
     },
-    "/publications/:publication_id/vote": {
+    "/publications/{id}/vote": {
       "post": {
         "tags": [
           "Publications"
@@ -202,13 +182,24 @@
         }
       }
     },
-    "/publications-types/publication_type_id": {
+    "/publications-types/{id}": {
       "get": {
         "tags": [
           "Publications Types"
         ],
         "summary": "Returns a single publication type By ID.",
         "description": "Returns a single publication type",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID of publication to return",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation",
@@ -219,6 +210,9 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Publication type not found"
           }
         }
       }
@@ -230,27 +224,17 @@
         ],
         "summary": "Create user",
         "description": "This can only be done by the logged in user.",
-        "operationId": "createUser",
-        "requestBody": {
-          "description": "Created user object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            },
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID of user to return",
+            "required": true,
+            "schema": {
+              "type": "integer"
             }
           }
-        },
+        ],
         "responses": {
           "default": {
             "description": "successful operation",
@@ -270,59 +254,18 @@
         }
       }
     },
-    "/user/:user_id": {
-      "post": {
-        "tags": [
-          "User"
-        ],
-        "summary": "Creates list of users with given input array",
-        "description": "Creates list of users with given input array",
-        "operationId": "createUsersWithListInput",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "successful operation"
-          }
-        }
-      },
+    "/users/{id}": {
       "get": {
         "tags": [
           "User"
         ],
         "summary": "Get user by user name",
-        "description": "",
-        "operationId": "getUserByName",
+        "description": "View info user with the id added",
         "parameters": [
           {
-            "name": "username",
+            "name": "id",
             "in": "path",
-            "description": "The name that needs to be fetched. Use user1 for testing. ",
+            "description": "user id ",
             "required": true,
             "schema": {
               "type": "string"
@@ -359,20 +302,19 @@
         ],
         "summary": "Update user",
         "description": "This can only be done by the logged in user.",
-        "operationId": "updateUser",
         "parameters": [
           {
-            "name": "username",
             "in": "path",
-            "description": "name that need to be deleted",
+            "name": "id",
+            "description": "ID of user to update",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer"
             }
           }
         ],
         "requestBody": {
-          "description": "Update an existent user in the store",
+          "description": "Update an existent user contain profile info",
           "content": {
             "application/json": {
               "schema": {
@@ -432,17 +374,9 @@
         ],
         "summary": "Logs user into the system",
         "description": "Authentication users",
-        "consumes": [
-          "application/json"
-        ],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Login"
-              }
-            },
-            "application/x-www-form-urlencoded": {
               "schema": {
                 "$ref": "#/components/schemas/Login"
               }
@@ -469,8 +403,15 @@
         ],
         "summary": "Logs out current logged in user session",
         "description": "",
-        "operationId": "signUp",
-        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Signup"
+              }
+            }
+          }
+        },
         "responses": {
           "default": {
             "description": "successful operation"
@@ -516,6 +457,7 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
+        "in": "header",
         "bearerFormat": "JWT"
       }
     },
@@ -529,8 +471,8 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "format": "uuid"
+            "type": "integer",
+            "format": "int64"
           },
           "first_name": {
             "type": "string",
@@ -547,10 +489,6 @@
           "username": {
             "type": "string",
             "example": "youUser"
-          },
-          "password": {
-            "type": "string",
-            "example": "xxxxxx"
           },
           "email_verified": {
             "type": "string",
@@ -750,12 +688,57 @@
         "properties": {
           "email": {
             "type": "string",
-            "example": "pakorro2@gmail.com"
+            "example": "your@mail.com"
           },
           "password": {
             "type": "string"
           }
         }
+      },
+      "Signup": {
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "example": "John"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Doe James"
+          },
+          "username": {
+            "type": "string",
+            "example": "youUser"
+          },
+          "email": {
+            "type": "string",
+            "example": "john@email.com"
+          },
+          "password": {
+            "type": "string"
+          },
+          "image_url": {
+            "type": "string"
+          },
+          "code_phone": {
+            "type": "integer",
+            "example": "52 --Code México"
+          },
+          "phone": {
+            "type": "integer",
+            "example": 8442904146
+          },
+          "country_id": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "first_name",
+          "last_name",
+          "email",
+          "password",
+          "username"
+        ]
       }
     }
   }

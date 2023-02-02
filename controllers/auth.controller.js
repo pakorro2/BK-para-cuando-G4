@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const chekUserCredential = require('../services/auth.services')
+const { chekUserCredential, createUserAndProfile, checkInfoToken } = require('../services/auth.services')
 const UsersService = require('../services/users.service')
 const jwtSecret = process.env.JWT_SECRET
 
@@ -31,9 +31,53 @@ const postLogin = (req, res) => {
     res.status(400).json({ message: 'Missing data', fields: { email: 'example@example.com', password: 'string' } })
   }
 }
+const postSignUp = async (request, response, next) => {
+  try {
+    let { first_name, last_name, email, password, username } = request.body
+    if (first_name && last_name && email && password && username) {
+      let user = await createUserAndProfile(request.body)
+      console.log(user)
+      return response.status(201).json({
+        results: {
+          user: user.newUser,
+          profile: user.newProfile
+        }
+      })
+    } else {
+      return response.status(400).json({
+        messege: 'missing fields', fields: {
+          first_name: 'string *',
+          last_name: 'string *',
+          username: 'string *',
+          email: 'example@gmail.com *',
+          password: 'string *',
+          image_url: 'url',
+          code_phone: 'number',
+          phone: 'number',
+          country_id: 'integer'
+        }
+      })
+    }
+  } catch (error) {
+    next(error)
+  }
+}
 
+const getMyUser = async (request, response, next) => {
+  try {
+    const id = request.user.id
+    console.log(id)
+    const userInfo = await checkInfoToken(id)
+    return response.status(201).json({ result: userInfo })
+  } catch (error) {
+    next(error)
+  }
+
+}
 
 
 module.exports = {
-  postLogin
+  postLogin,
+  postSignUp,
+  getMyUser
 }
