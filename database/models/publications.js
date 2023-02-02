@@ -9,10 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Publications.belongsToMany(models.Profiles, {through: models.Votes, foreignKey: 'publication_id' })
+      Publications.belongsToMany(models.Profiles, { through: models.Votes, foreignKey: 'publication_id' })
       Publications.belongsTo(models.Profiles)
       Publications.belongsTo(models.Cities)
-      Publications.belongsTo(models.PublicationsTypes)
+      Publications.belongsTo(models.PublicationsTypes, { foreignKey: 'publication_type_id'})
     }
   }
   Publications.init({
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     content: DataTypes.TEXT,
     picture: DataTypes.STRING,
     city_id: DataTypes.STRING,
-    imagen_url: {
+    image_url: {
       type: DataTypes.STRING,
       validate: {
         isUrl: true
