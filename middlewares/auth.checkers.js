@@ -15,6 +15,23 @@ const isAdminOrSameUser = (request, response, next) => {
     response.status(401).json({ message: 'Permission Denied' })
   }
 }
+
+const isAdminOrSameUserPublication = async (request, response, next) => {
+  const profile_id = request.user.profile_id
+  const publication_id = request.params.id
+  const isSameUser = await models.Publications.findOne({
+    where: {
+      id: publication_id,
+      profile_id,
+    }
+  })
+  if (request.user.role === 'admin' || isSameUser) {
+    next()
+  } else {
+    response.status(401).json({ message: 'Permission Denied' })
+  }
+}
+
 const isTheSameUser = async (request, response, next) => {
   const id = request.params.id
   const profile_id = request.user.profile_id
@@ -35,5 +52,6 @@ const isTheSameUser = async (request, response, next) => {
 module.exports = {
   isRoleAdmin,
   isAdminOrSameUser,
-  isTheSameUser
+  isTheSameUser,
+  isAdminOrSameUserPublication
 }
