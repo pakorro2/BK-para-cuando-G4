@@ -20,7 +20,6 @@ const postLogin = (req, res) => {
           userService.updateUser(data.id, { token: token })
           res.status(200).json({ message: 'Correct credentials', token })
         } else {
-          console.log(data)
           res.status(401).json({ message: 'Email or password is incorrect' })
         }
       })
@@ -36,7 +35,6 @@ const postSignUp = async (request, response, next) => {
     let { first_name, last_name, email, password, username } = request.body
     if (first_name && last_name && email && password && username) {
       let user = await createUserAndProfile(request.body)
-      console.log(user)
       return response.status(201).json({
         results: {
           user: user.newUser,
@@ -65,8 +63,7 @@ const postSignUp = async (request, response, next) => {
 
 const getMyUser = async (request, response, next) => {
   try {
-    const id = request.user.id
-    console.log(id)
+    const id = request.user.user_id
     const userInfo = await checkInfoToken(id)
     return response.status(201).json({ result: userInfo })
   } catch (error) {

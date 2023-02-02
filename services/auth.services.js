@@ -92,7 +92,7 @@ const checkInfoToken = async (id) => {
         exclude: ['password', 'email_verified', 'token', 'created_at', 'updated_at']
       }, include: {
         model: models.Profiles,
-        attributes: ['image_url', 'code_phone', 'phone', 'country_id', 'role_id']
+        attributes: ['id', 'image_url', 'code_phone', 'phone', 'country_id', 'role_id']
 
       }
     })
