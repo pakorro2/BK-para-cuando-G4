@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Publications.belongsToMany(models.Profiles, { through: models.Votes, foreignKey: 'publication_id' })
+      //Publications.belongsToMany(models.Profiles, { through: models.Votes, foreignKey: 'publication_id' })
       Publications.belongsTo(models.Profiles)
       Publications.belongsTo(models.Cities)
       Publications.belongsToMany(models.Tags, { as: 'tags', through: models.publication_tags, foreignKey: 'publication_id' })

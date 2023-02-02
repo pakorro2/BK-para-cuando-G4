@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       Profiles.hasMany(models.Votes)
       Profiles.belongsTo(models.Roles)
       Profiles.belongsTo(models.Countries)
-      Profiles.belongsToMany(models.Publications, { through: models.Votes, foreignKey: 'profile_id' })
+      //Profiles.belongsToMany(models.Publications, { through: models.Votes, foreignKey: 'profile_id' })
     }
   }
   Profiles.init({
