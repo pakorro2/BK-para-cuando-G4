@@ -11,6 +11,7 @@ const {
   removeUser,
 } = require('../controllers/users.controller')
 const { getUserVotes } = require('../controllers/votes.controller')
+const { getAllPublicationByUser } = require('../controllers/publications.controller')
 
 router.get('/', passport.authenticate('jwt', { session: false }), roleMiddleware, getUsers)
 router.post('/', passport.authenticate('jwt', { session: false }), addUser)
@@ -18,5 +19,6 @@ router.get('/:id', getUser)
 router.put('/:id', passport.authenticate('jwt', { session: false }), updateUser)
 router.delete('/:id', removeUser)
 router.get('/:id/votes', passport.authenticate('jwt', { session: false }), getUserVotes)
+router.get('/:id/publications', passport.authenticate('jwt', { session: false }), getAllPublicationByUser)
 
 module.exports = router

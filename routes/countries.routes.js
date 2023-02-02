@@ -1,18 +1,12 @@
 const express = require('express')
 const router = express.Router()
 
-const {
-  getCountries,
-  addCountry,
-  getCountry,
-  updateCountry,
-  removeCountry,
-} = require('../controllers/cities.controller')
+const countriesController = require('../controllers/countries.controller')
 
-router.get('/countries', getCountries)
-router.post('/countries', addCountry)
-router.get('/countries/:id', getCountry)
-router.put('/countries/:id', updateCountry)
-router.delete('/countries/:id', removeCountry)
+router.get('/', countriesController.getCountries)
+// router.post('/countries', countriesController.addCountry)
+// router.get('/countries/:id', countriesController.getCountry)
+// router.put('/countries/:id', countriesController.updateCountry)
+// router.delete('/countries/:id', countriesController.removeCountry)
 
 module.exports = router

@@ -21,6 +21,17 @@ const getAllPublications = async (request, response, next) => {
   }
 }
 
+const getAllPublicationByUser = async (request, response, next) => {
+  try {
+    const user_id = request.params.id
+    const publications = await publicationsService.findAllPublicationByUser(user_id)
+    return response.status(200).json({ results: publications })
+  } catch (error) {
+    console.log(error)
+    next(error)
+  }
+}
+
 const getPublicationById = async (request, response, next) => {
   try {
     const id = request.params.id
@@ -33,7 +44,7 @@ const getPublicationById = async (request, response, next) => {
 
 const postPublication = async (request, response, next) => {
   try {
-    const user_id = request.user.user_id
+    const profile_id = request.user.profile_id
     const publicationData = request.body
     if (!(publicationData.publication_type_id && publicationData.city_id && publicationData.title && publicationData.content)) {
       response.status(400).json({
@@ -49,10 +60,9 @@ const postPublication = async (request, response, next) => {
         }
       })
     }
-    const publication = await publicationsService.createPublication(user_id, publicationData)
+    const publication = await publicationsService.createPublication(profile_id, publicationData)
     return response.status(201).json({ results: publication, message: 'created successfully' })
   } catch (error) {
-    console.log(error)
     next(error)
   }
 }
@@ -78,22 +88,11 @@ const deletePublication = async (request, response, next) => {
   }
 }
 
-const addVote = async (request, response, next) => {
-  try {
-    const user_id = request.user.user_id
-    const publication_id = request.params.id
-    const vote = await publicationsService.createVote(user_id, publication_id)
-    return response.status(201).json({result: vote, message: 'add vote'})
-  } catch (error) {
-    next(error)
-  }
-}
-
 module.exports = {
   getAllPublications,
+  getAllPublicationByUser,
   getPublicationById,
   postPublication,
   updatePublication,
   deletePublication,
-  addVote
 }
