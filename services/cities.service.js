@@ -12,7 +12,12 @@ class CitiesService {
 
   async findAndCount(query) {
     const options = {
-      where: {},
+      where: {
+
+      },
+      attributes: {
+        exclude: ['created_at', 'updated_at']
+      }
     }
 
     const { limit, offset } = query

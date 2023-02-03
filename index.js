@@ -3,7 +3,7 @@ const cors = require('cors')
 const helmet = require('helmet')
 require('dotenv').config()
 const routerModels = require('./routes/models.routes')
-
+const routerErrorHandler = require('./routes/errorhandler.router')
 
 const app = express()
 const PORT = process.env.PORT || 8000
@@ -54,7 +54,9 @@ app.get('/', ({ res }) => {
   })
 })
 
+
 routerModels(app)
+routerErrorHandler(app)
 
 app.listen(PORT, () => {
   console.log(`Server on PORT: ${PORT}`)

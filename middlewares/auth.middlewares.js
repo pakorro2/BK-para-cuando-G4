@@ -30,7 +30,7 @@ const jwtSecret = process.env.JWT_SECRET
 
 
 const options = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
+  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
   secretOrKey: jwtSecret
 }
 passport.use(
