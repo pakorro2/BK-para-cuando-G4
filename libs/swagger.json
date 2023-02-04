@@ -2,13 +2,12 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Para Cuando API Ver. 1.0",
-    "description": "Objetivo del la API es que podamos autenticarnos para publicar ciertas\nencuestas y votarlas.   Específicamente hablamos de publicar eventos, conciertos y torneos en una\nfecha determinada haciendo que la comunidad decida dar su apoyo o no para\nque se realice.\n\nTenemos que idear la manera en que las personas puedan acceder a una\naplicación para que puedan compartir estas publicaciones en donde puedan\nvotar a favor de estas o en contra.\n\n Apartir de esta idea mostraremos todas las rutas a las que se podra acceder, los datos de entrada y que respuesta se puede esperar segun el endpoint.",
+    "description": "Objetivo del la API es que podamos autenticarnos para publicar ciertas\nencuestas y votarlas.   Específicamente hablamos de publicar eventos, conciertos y torneos en una\nfecha determinada haciendo que la comunidad decida dar su apoyo o no para\nque se realice.\n\nTenemos que idear la manera en que las personas puedan acceder a una\naplicación para que puedan compartir estas publicaciones en donde puedan\nvotar.\n\n Apartir de esta idea mostraremos todas las rutas a las que se podra acceder, los datos de entrada y que respuesta se puede esperar segun el endpoint.",
     "version": "0.1.9"
   },
   "servers": [
     {
-      "url": "http://localhost:9000/api/v1",
-      "description": "change this value to use in production"
+      "url": "/api/v1"
     }
   ],
   "tags": [
