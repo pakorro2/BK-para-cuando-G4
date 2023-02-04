@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "Para Cuando API Ver. 1.0",
-    "description": "Objetivo del la API es que podamos autenticarnos para publicar ciertas\nencuestas y votarlas.   Específicamente hablamos de publicar eventos, conciertos y torneos en una\nfecha determinada haciendo que la comunidad decida dar su apoyo o no para\nque se realice.\n\nTenemos que idear la manera en que las personas puedan acceder a una\naplicación para que puedan compartir estas publicaciones en donde puedan\nvotar.\n\n Apartir de esta idea mostraremos todas las rutas a las que se podra acceder, los datos de entrada y que respuesta se puede esperar segun el endpoint.",
+    "description": "Objetivo del la API es que podamos autenticarnos para publicar ciertas encuestas y votarlas.\nEspecíficamente hablamos de publicar eventos, conciertos y torneos en una\nfecha determinada haciendo que la comunidad decida dar su apoyo o no para que se realice.\nTenemos que idear la manera en que las personas puedan acceder a una aplicación para que puedan compartir estas publicaciones en donde puedan votar.\n\n Apartir de esta idea mostraremos todas las rutas a las que se podra acceder, los datos de entrada y que respuesta se puede esperar segun el endpoint.",
     "version": "0.1.9"
   },
   "servers": [
@@ -121,8 +121,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Correct Credentials",
+          "201": {
+            "description": "successful operation",
             "content": {
               "application/json": {
                 "schema": {
@@ -172,12 +172,34 @@
           "Authentication"
         ],
         "summary": "Logs out current logged in user session",
-        "description": "",
-        "operationId": "tokenInfo",
-        "parameters": [],
+        "description": "Get info my user",
         "responses": {
-          "default": {
-            "description": "successful operation"
+          "201": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "$ref": "#/components/schemas/User"
+                    },
+                    "Profiles": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Profiles"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "not found"
           }
         },
         "security": [
@@ -194,42 +216,99 @@
         ],
         "summary": "Get all users only admin - Administrator view",
         "description": "This can only be done by the logged in user.",
-        "operationId": "createUser",
-        "requestBody": {
-          "description": "Created user object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            },
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
-          }
-        },
         "responses": {
-          "default": {
+          "200": {
             "description": "successful operation",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "totalPages": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "currentPage": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "Results": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "first_name": {
+                                "type": "string",
+                                "example": "John"
+                              },
+                              "last_name": {
+                                "type": "string",
+                                "example": "Doe James"
+                              },
+                              "email": {
+                                "type": "string",
+                                "example": "john@email.com"
+                              },
+                              "username": {
+                                "type": "string",
+                                "example": "youUser"
+                              },
+                              "Profiles": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "image_url": {
+                                      "type": "string"
+                                    },
+                                    "code_phone": {
+                                      "type": "integer",
+                                      "example": 52
+                                    },
+                                    "phone": {
+                                      "type": "integer",
+                                      "example": 8442904
+                                    },
+                                    "country_id": {
+                                      "type": "integer"
+                                    },
+                                    "Role": {
+                                      "type": "object",
+                                      "properties": {
+                                        "name": {
+                                          "type": "string",
+                                          "example": "public"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "not found"
           }
         },
         "security": [
@@ -264,21 +343,84 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "type": "object",
+                  "properties": {
+                    "Results": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "first_name": {
+                          "type": "string",
+                          "example": "John"
+                        },
+                        "last_name": {
+                          "type": "string",
+                          "example": "Doe James"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "john@email.com"
+                        },
+                        "username": {
+                          "type": "string",
+                          "example": "youUser"
+                        },
+                        "Profiles": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "image_url": {
+                                "type": "string"
+                              },
+                              "code_phone": {
+                                "type": "integer",
+                                "example": 52
+                              },
+                              "phone": {
+                                "type": "integer",
+                                "example": 8442904
+                              },
+                              "country_id": {
+                                "type": "integer"
+                              },
+                              "role_id": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
           },
-          "400": {
-            "description": "Invalid username supplied"
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
-            "description": "User not found"
+            "description": "Publication not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not found user"
+                    },
+                    "errorName": {
+                      "type": "string",
+                      "example": "Not Found"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -367,7 +509,6 @@
         ]
       }
     },
-    "/users/{id}/votes": null,
     "/tags/": {
       "get": {
         "tags": [
@@ -510,7 +651,65 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Publication"
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "totalPages": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "currentPage": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "results": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "profile_id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "publication_type_id": {
+                                "type": "integer",
+                                "format": "serial"
+                              },
+                              "city_id": {
+                                "type": "integer",
+                                "format": "serial"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "description": {
+                                "type": "string"
+                              },
+                              "content": {
+                                "type": "string"
+                              },
+                              "picture": {
+                                "type": "string"
+                              },
+                              "image_url": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -536,11 +735,77 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "successful operation"
+          "201": {
+            "description": "add vote",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "profile_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "publication_type_id": {
+                          "type": "integer",
+                          "format": "serial"
+                        },
+                        "city_id": {
+                          "type": "integer",
+                          "format": "serial"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "content": {
+                          "type": "string"
+                        },
+                        "picture": {
+                          "type": "string"
+                        },
+                        "image_url": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "created successfully"
+                    }
+                  }
+                }
+              }
+            }
           },
-          "400": {
-            "description": "Publications not found"
+          "404": {
+            "description": "Publication not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not found publication"
+                    },
+                    "errorName": {
+                      "type": "string",
+                      "example": "Not Found"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -570,21 +835,73 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "successful operation",
+          "201": {
+            "description": "add vote",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Publication"
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "profile_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "content": {
+                          "type": "string"
+                        },
+                        "publication_type_id": {
+                          "type": "integer",
+                          "format": "serial"
+                        },
+                        "picture": {
+                          "type": "string"
+                        },
+                        "city_id": {
+                          "type": "integer",
+                          "format": "serial"
+                        },
+                        "image_url": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
           },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
           "404": {
-            "description": "publication not found"
+            "description": "Publication not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not found publication"
+                    },
+                    "errorName": {
+                      "type": "string",
+                      "example": "Not Found"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -613,20 +930,76 @@
         ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "add vote",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Publication"
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "profile_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "publication_type_id": {
+                          "type": "integer",
+                          "format": "serial"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "content": {
+                          "type": "string"
+                        },
+                        "picture": {
+                          "type": "string"
+                        },
+                        "city_id": {
+                          "type": "integer",
+                          "format": "serial"
+                        },
+                        "image_url": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "created successfully"
+                    }
+                  }
                 }
               }
             }
           },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
           "404": {
-            "description": "publication not found"
+            "description": "Publication not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not found publication"
+                    },
+                    "errorName": {
+                      "type": "string",
+                      "example": "Not Found"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -641,8 +1014,8 @@
         "tags": [
           "Publications"
         ],
-        "summary": "Get votes in publication by my user",
-        "description": "get votes by my user",
+        "summary": "add votes in publication by my user",
+        "description": "votes by my user or remove vote",
         "parameters": [
           {
             "name": "id",
@@ -655,21 +1028,50 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "successful operation",
+          "201": {
+            "description": "add vote",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Publication"
+                  "type": "object",
+                  "properties": {
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "profile_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "publication_id": {
+                          "type": "string",
+                          "format": "uuid"
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "add vote"
+                    }
+                  }
                 }
               }
             }
           },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "404": {
-            "description": "publication not found"
+          "202": {
+            "description": "remove vote",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "discarded vote"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "security": [
@@ -692,10 +1094,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublicationTypes"
+                  "type": "object",
+                  "properties": {
+                    "Results": {
+                      "$ref": "#/components/schemas/PublicationTypes"
+                    }
+                  }
                 }
               }
             }
+          },
+          "400": {
+            "description": "Publication type not found"
           }
         }
       }
@@ -724,7 +1134,32 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PublicationTypes"
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "$ref": "#/components/schemas/PublicationTypes"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Publication not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Not found publication type"
+                    },
+                    "errorName": {
+                      "type": "string",
+                      "example": "Not Found"
+                    }
+                  }
                 }
               }
             }
@@ -751,7 +1186,7 @@
             }
           },
           "400": {
-            "description": "Publications not found"
+            "description": "Cities not found"
           }
         }
       }
@@ -776,8 +1211,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "format": "uuid"
+            "type": "integer"
           },
           "first_name": {
             "type": "string",
@@ -794,18 +1228,7 @@
           "username": {
             "type": "string",
             "example": "youUser"
-          },
-          "email_verified": {
-            "type": "string",
-            "format": "date-time",
-            "example": "26/01/2023"
-          },
-          "token": {
-            "type": "string"
           }
-        },
-        "xml": {
-          "name": "user"
         }
       },
       "Profiles": {
@@ -830,15 +1253,12 @@
           },
           "code_phone": {
             "type": "integer",
-            "example": "52 --Code México"
+            "example": 52
           },
           "phone": {
             "type": "integer",
             "example": 8442904146
           }
-        },
-        "xml": {
-          "name": "profile"
         }
       },
       "Countries": {
@@ -895,9 +1315,6 @@
       },
       "Publication": {
         "type": "object",
-        "discriminator": {
-          "propertyName": "petType"
-        },
         "properties": {
           "publication_type_id": {
             "type": "integer",
@@ -1036,7 +1453,7 @@
                 "type": "integer",
                 "example": 1
               },
-              "Results": {
+              "results": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/Cities"
